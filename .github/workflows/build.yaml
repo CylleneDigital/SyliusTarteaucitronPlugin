@@ -112,7 +112,7 @@ jobs:
         run: vendor/bin/behat --colors --strict --no-interaction -f progress
 
       - name: Upload Behat failure artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: "behat-logs-sylius${{ matrix.sylius }}-symfony${{ matrix.symfony }}-php${{ matrix.php }}-job${{ strategy.job-index }}"
