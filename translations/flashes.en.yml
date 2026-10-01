@@ -1,0 +1,4 @@
+cyllene_digital_sylius_tarteaucitron:
+    ui:
+        configuration_saved: 'Tarteaucitron configuration has been saved.'
+        configuration_saved_concurrently: 'Another administrator saved this channel at the same time: their configuration is shown below, apply your changes again.'

@@ -1,0 +1,35 @@
+{% import '@SyliusAdmin/shared/helper/header.html.twig' as sylius_header %}
+
+<div class="col-12 col-md">
+    <div class="d-md-flex gap-2 align-items-center">
+        {{ sylius_header.h1('cyllene_digital_sylius_tarteaucitron.ui.tarteaucitron_configuration'|trans, 'tabler:cookie', null) }}
+    </div>
+    {% set current_channel = hookable_metadata.context.channel|default(null) %}
+    {% set channels = hookable_metadata.context.channels|default([]) %}
+    {% if current_channel %}
+        <div class="mt-2 d-flex align-items-center gap-2" {{ sylius_test_html_attribute('tarteaucitron-channel') }}>
+            <span class="text-secondary">{{ 'cyllene_digital_sylius_tarteaucitron.ui.channel'|trans }} :</span>
+            {% if channels|length > 1 %}
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ current_channel.name }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for ch in channels %}
+                            <li>
+                                <a
+                                    class="dropdown-item{% if ch.code == current_channel.code %} active{% endif %}"
+                                    href="{{ path('cyllene_digital_sylius_tarteaucitron_admin_configuration', { channelCode: ch.code }) }}"
+                                >
+                                    {{ ch.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <span class="badge text-bg-primary">{{ current_channel.name }}</span>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

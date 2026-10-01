@@ -1,0 +1,33 @@
+/*
+ * The library draws the backdrop of the middle banner and of the preferences panel with a blurred
+ * white veil (backdrop-filter) and a 9000px box shadow. Chrome paints both in tiles over a Sylius
+ * shop: visible grey rectangles and mirrored page edges behind the banner. A plain veil and a regular
+ * shadow give the same focus without the artefacts.
+ *
+ * Stacking is left to the library: the banner sits above the veil, and drops under the preferences
+ * panel when « Personalize » opens it (body.tarteaucitron-modal-open).
+ */
+html body.tarteaucitron-modal-open div#tarteaucitronRoot::before,
+html body #tarteaucitronRoot.tarteaucitronSize-middle.tarteaucitronBeforeVisible::before {
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html body #tarteaucitronRoot.tarteaucitronSize-middle div#tarteaucitronAlertBig {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* The panel's click-to-close backdrop is a light grey sheet; the veil above already dims the page. */
+html body #tarteaucitronRoot button#tarteaucitronBack {
+    background: transparent;
+}
+
+/*
+ * The library keeps the banner under the open panel, so it is still there if the visitor closes the
+ * panel without choosing. Through a plain veil it read as a second stacked popup: hide it meanwhile
+ * (visibility also takes it out of the accessibility tree); it comes back when the panel closes.
+ */
+html body.tarteaucitron-modal-open #tarteaucitronRoot #tarteaucitronAlertBig {
+    visibility: hidden;
+}

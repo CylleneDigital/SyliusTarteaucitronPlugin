@@ -1,0 +1,83 @@
+imports:
+    - { resource: "services_test.php" }
+
+twig:
+    paths:
+        '%kernel.project_dir%/../../../tests/TestApplication/templates': ~
+
+cyllene_digital_sylius_tarteaucitron:
+    # A vendor service offered without a PHP class: exercises the `trackers:` bundle configuration.
+    trackers:
+        smartsupp:
+            category: support
+            label: Smartsupp
+            parameters:
+                smartsuppKey:
+                    placeholder: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+# Behat only: every browser scenario then also proves advertising.min.js is shipped, and runs the
+# library on its late-built panel path. Off in dev, where it would hide the grouping of services
+# (a tarteaucitron.js bug, see docs/domain/init-options.md).
+when@test:
+    cyllene_digital_sylius_tarteaucitron:
+        integration:
+            adblocker: true
+
+services:
+    Tests\CylleneDigital\SyliusTarteaucitronPlugin\Fixture\TarteaucitronConfigurationFixture:
+        arguments:
+            - '@sylius.repository.channel'
+            - '@cyllene_digital_sylius_tarteaucitron.factory.configuration'
+            - '@cyllene_digital_sylius_tarteaucitron.repository.configuration'
+            - '@doctrine.orm.entity_manager'
+        tags: ['sylius_fixtures.fixture']
+
+# Dev shop (`sylius:fixtures:load default`): two channels, the main one in two locales, both with
+# tarteaucitron on, to exercise the channel switcher and the per-locale texts. The main channel
+# answers on SYLIUS_FIXTURES_HOSTNAME; the second one through `?_channel_code=B2B_WEB` (dev only).
+sylius_fixtures:
+    suites:
+        default:
+            fixtures:
+                channel:
+                    options:
+                        custom:
+                            fashion_web_store:
+                                locales:
+                                    - '%locale%'
+                                    - 'fr_FR'
+                            b2b_web_store:
+                                name: 'B2B Web Store'
+                                code: 'B2B_WEB'
+                                locales:
+                                    - '%locale%'
+                                currencies:
+                                    - 'USD'
+                                enabled: true
+                                hostname: 'b2b.%env(resolve:SYLIUS_FIXTURES_HOSTNAME)%'
+                                menu_taxon: 'category'
+                # Sylius' order fixture fetch-joins product translations in the order's locale only,
+                # then saves an empty en_US translation: orders in fr_FR fail at random. Products only
+                # belong to FASHION_WEB, so orders cannot move to B2B_WEB; the plugin needs none.
+                order: false
+                tarteaucitron_configuration:
+                    priority: -10
+                    options:
+                        channels:
+                            FASHION_WEB:
+                                services:
+                                    gtag:
+                                        gtag_ua: 'G-FIXTURE00'
+                                    youtube: ~
+                                    facebookpost: ~
+                                localized_options:
+                                    en_US:
+                                        middle_bar_head: '🍪 Cookie preferences'
+                                    fr_FR:
+                                        accept_all: 'J’accepte'
+                            B2B_WEB:
+                                services:
+                                    youtube: ~
+                                init_options:
+                                    orientation: 'bottom'
+                                    group_services: false

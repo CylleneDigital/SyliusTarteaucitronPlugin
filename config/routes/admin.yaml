@@ -1,0 +1,5 @@
+cyllene_digital_sylius_tarteaucitron_admin_configuration:
+    path: /tarteaucitron
+    methods: [GET, POST, PUT]
+    defaults:
+        _controller: CylleneDigital\SyliusTarteaucitronPlugin\Controller\Admin\TarteaucitronConfigurationAction

@@ -1,0 +1,16 @@
+parameters:
+    level: max
+    # Defensive checks on values only their docblock types (repository results, parsed vendor
+    # files) are kept on purpose: with `true` they would be reported as always true.
+    treatPhpDocTypesAsCertain: false
+    paths:
+        - src
+        - tests/Unit
+        - tests/Integration
+        - tests/Behat
+        - tests/TestApplication/src
+    ignoreErrors:
+        # Entity ids are `?int $id = null`: Doctrine assigns the int, PHP code never does.
+        -
+            identifier: property.unusedType
+            path: src/Entity

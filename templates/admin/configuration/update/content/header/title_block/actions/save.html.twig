@@ -1,0 +1,10 @@
+{% import '@SyliusAdmin/shared/helper/button.html.twig' as button %}
+
+{% set form = hookable_metadata.context.form|default(null) %}
+{{ button.primary(
+    sylius_test_form_attribute('update-changes-button')|merge({
+        text: 'sylius.ui.save_changes'|trans,
+        type: 'submit',
+        form: form.vars.id|default(null)
+    })
+) }}

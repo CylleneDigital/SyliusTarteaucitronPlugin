@@ -1,0 +1,236 @@
+name: Build
+
+on:
+    # No `paths-ignore` on `pull_request`: `Build complete` is a required check, and a required
+    # check that never starts blocks the pull request for good.
+    #
+    # `push` is limited to `main` so that a branch does not run the matrix twice, once for the push
+    # and once for its pull request.
+    push:
+        branches:
+            - main
+    pull_request: ~
+    release:
+        types: [created]
+    schedule:
+        -
+            cron: "0 1 * * 6"
+    workflow_dispatch: ~
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+jobs:
+    tests:
+        # Pinned rather than `ubuntu-latest`: the build action is only known to work on this image.
+        runs-on: ubuntu-24.04
+        # A stuck browser would otherwise hold the runner for the 6-hour default.
+        timeout-minutes: 30
+
+        name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, ${{ matrix.database }}"
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php: ["8.2", "8.3", "8.4", "8.5"]
+                symfony: ["^7.4", "^8.0"]
+                sylius: ["~2.1.0", "~2.2.0", "~2.3.0"]
+                database: ["mysql:8.4"]
+                node: ["22.x"]
+                # Sylius supports Symfony 8 from 2.3 only; Sylius 2.3 needs PHP 8.3, Symfony 8 PHP 8.4.
+                exclude:
+                    -
+                        sylius: "~2.1.0"
+                        symfony: "^8.0"
+                    -
+                        sylius: "~2.2.0"
+                        symfony: "^8.0"
+                    -
+                        sylius: "~2.3.0"
+                        php: "8.2"
+                    -
+                        symfony: "^8.0"
+                        php: "8.3"
+                include:
+                    # Not on Sylius 2.3: with DBAL 4 its migrations only recognise MySQL and skip MariaDB.
+                    -
+                        php: "8.4"
+                        symfony: "^7.4"
+                        sylius: "~2.2.0"
+                        database: "mariadb:11.4"
+                        node: "22.x"
+                    -
+                        php: "8.4"
+                        symfony: "^8.0"
+                        sylius: "~2.3.0"
+                        database: "postgres:17"
+                        node: "22.x"
+                    # Matches the existing MySQL combination: only that job measures code coverage.
+                    -
+                        php: "8.4"
+                        symfony: "^8.0"
+                        sylius: "~2.3.0"
+                        database: "mysql:8.4"
+                        coverage: "pcov"
+
+        env:
+            APP_ENV: test
+
+        steps:
+            -
+                uses: actions/checkout@v7
+
+            # Sylius 2.1 / 2.2 declare their Behat steps in annotations, which Behat 4 no longer reads;
+            # Composer would still pick Behat 4 for them.
+            -
+                name: Keep Behat 3 before Sylius 2.3
+                if: matrix.sylius != '~2.3.0'
+                run: composer require --dev --no-update --no-interaction "behat/behat:^3.22" "friends-of-behat/mink-extension:^2.7"
+
+            # Sylius 2.1 / 2.2 mappings fail ORM 3.7 validation (ShipmentUnit#shipment vs Shipment#units).
+            -
+                name: Keep Doctrine ORM below 3.7 before Sylius 2.3
+                if: matrix.sylius != '~2.3.0'
+                run: composer require --no-update --no-interaction "doctrine/orm:^2.14 || >=3.0 <3.7"
+
+            -
+                name: Build Sylius Test Application
+                uses: SyliusLabs/BuildTestAppAction@fbdfc158a99f540fc3bbe554b46120d14444f2f4 # v4.3.0
+                with:
+                    e2e_js: "yes"
+                    cache_key: "${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
+                    cache_restore_key: "${{ runner.os }}-php-${{ matrix.php }}-composer-"
+                    database: "${{ matrix.database }}"
+                    node_version: "${{ matrix.node }}"
+                    php_version: "${{ matrix.php }}"
+                    php_coverage: "${{ matrix.coverage || 'none' }}"
+                    # The PHP-FPM worker behind `symfony server:start` segfaulted at random under OPcache
+                    # (Behat 502, "child exited on signal 11"): Behat does not need it.
+                    opcache_enable: "no"
+                    sylius_version: "${{ matrix.sylius }}"
+                    symfony_version: "${{ matrix.symfony }}"
+
+            # The action sets serverVersion=11.4 for MariaDB: DBAL then picks the MySQL platform and
+            # reports MariaDB's JSON columns as drift. DBAL wants mariadb-<major>.<minor>.<patch>.
+            -
+                name: Point DBAL at the MariaDB platform
+                if: startsWith(matrix.database, 'mariadb:')
+                run: echo "DATABASE_URL=${DATABASE_URL/serverVersion=/serverVersion=mariadb-}.0" >> "$GITHUB_ENV"
+
+            -
+                name: Run unit tests
+                run: vendor/bin/phpunit --colors=always --testsuite=unit
+
+            -
+                name: Validate composer.json
+                run: composer validate --ansi --strict
+
+            -
+                name: Validate container
+                run: vendor/bin/console lint:container
+
+            -
+                name: Lint templates
+                run: vendor/bin/console lint:twig templates
+
+            -
+                name: Validate Doctrine schema
+                run: vendor/bin/console doctrine:schema:validate --skip-sync
+
+            # Runs the plugin migration's down() (never exercised otherwise), then up() again: the drift
+            # check below then also proves down() left nothing behind that up() would collide with.
+            -
+                name: Revert and replay the plugin migration
+                run: |
+                    vendor/bin/console doctrine:migrations:execute 'CylleneDigital\SyliusTarteaucitronPlugin\Migrations\Version20260827140000' --down -n
+                    vendor/bin/console doctrine:migrations:execute 'CylleneDigital\SyliusTarteaucitronPlugin\Migrations\Version20260827140000' --up -n
+
+            # The database comes from the migrations, so any SQL left to apply on a plugin table means
+            # the migration and the mapping have diverged. Scoped to the plugin tables: Sylius core
+            # drift (messenger_messages indexes on recent DBAL) is not ours to fix and would mask it.
+            -
+                name: Validate plugin migration against the mapping
+                run: |
+                    drift="$(vendor/bin/console doctrine:schema:update --dump-sql | grep -i 'cyllene_tarteaucitron' || true)"
+                    if [ -n "${drift}" ]; then
+                      echo "${drift}"
+                      exit 1
+                    fi
+
+            -
+                name: Run PHPStan
+                run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress
+
+            -
+                name: Run ECS
+                run: vendor/bin/ecs check --no-progress-bar
+
+            -
+                name: Run integration tests
+                run: vendor/bin/phpunit --colors=always --testsuite=integration
+
+            -
+                name: Measure code coverage
+                if: matrix.coverage
+                run: |
+                    mkdir -p var/coverage
+                    vendor/bin/phpunit --colors=never --coverage-clover=var/coverage/clover.xml --coverage-text=var/coverage/coverage.txt
+                    { echo '### Code coverage (unit + integration)'; echo '```'; sed -n '/Summary:/,/^$/p' var/coverage/coverage.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+                    cat var/coverage/coverage.txt
+
+            -
+                name: Upload code coverage
+                if: matrix.coverage
+                uses: actions/upload-artifact@v7
+                with:
+                    name: coverage
+                    path: var/coverage
+
+            -
+                name: Run Behat
+                run: vendor/bin/behat --colors --strict --no-interaction -f progress
+
+            # A 502 "unexpected EOF" in Behat means the PHP backend of the Symfony server died: its
+            # stderr only lands in these logs. Read as files: `symfony server:log --no-follow` never returns,
+            # and the CLI keeps them under ~/.symfony5 or $XDG_CONFIG_HOME/symfony-cli depending on its version.
+            -
+                name: Show Symfony server logs
+                if: failure()
+                timeout-minutes: 1
+                run: find "$HOME" -maxdepth 6 -type f -path '*symfony*/log/*' -exec tail -n 200 {} +
+
+            -
+                name: Upload Behat failure artifacts
+                uses: actions/upload-artifact@v7
+                if: failure()
+                with:
+                    # No colon: `upload-artifact` rejects them, and `matrix.database` carries one.
+                    # The name must also discriminate Symfony, otherwise two jobs of the matrix
+                    # fight over the same artifact. `job-index` guarantees uniqueness.
+                    name: "behat-logs-sylius${{ matrix.sylius }}-symfony${{ matrix.symfony }}-php${{ matrix.php }}-job${{ strategy.job-index }}"
+                    path: etc/build
+                    if-no-files-found: ignore
+                    compression-level: 6
+                    overwrite: true
+
+    # The matrix jobs carry generated names, which change with the matrix itself. This one has a
+    # fixed name and is the only check the branch rule has to require.
+    #
+    # `always()` matters: without it the job is skipped when a matrix job fails, and a skipped
+    # required check counts as satisfied - the rule would let through exactly what it guards
+    # against.
+    build:
+        runs-on: ubuntu-24.04
+        name: "Build complete"
+        needs: tests
+        if: always()
+
+        steps:
+            -
+                name: Fail unless every matrix job succeeded
+                run: |
+                    [ "${{ needs.tests.result }}" = "success" ] || exit 1

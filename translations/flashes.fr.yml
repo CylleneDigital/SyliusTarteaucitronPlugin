@@ -1,0 +1,4 @@
+cyllene_digital_sylius_tarteaucitron:
+    ui:
+        configuration_saved: 'La configuration Tarteaucitron a été enregistrée.'
+        configuration_saved_concurrently: 'Un autre administrateur a enregistré ce canal au même moment : sa configuration est affichée ci-dessous, refaites vos modifications.'

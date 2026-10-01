@@ -1,0 +1,29 @@
+/vendor/
+/var/
+/node_modules/
+/phpunit.xml
+
+.idea/
+.env.local
+*.swp
+
+# Local Docker overrides (copy from compose.override.dist.yml)
+/compose.override.yml
+
+# Never commit assets:install output into the plugin's own public/
+/public/bundles/
+
+/tests/TestApplication/.env.local
+/tests/TestApplication/.env.*.local
+
+# Local Cyllene stack (FrankenPHP + Castor), not distributed
+/.docker/
+/castor.php
+/.castor.stub.php
+/CLAUDE.local.md
+/PROCEDURE_PR.md
+/composer.lock
+
+# Symfony CLI
+/.php-version
+/php.ini

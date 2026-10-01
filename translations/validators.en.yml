@@ -1,0 +1,3 @@
+cyllene_digital_sylius_tarteaucitron:
+    localized_text:
+        forbidden_characters: 'This text cannot contain the characters < > ".'

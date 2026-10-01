@@ -1,0 +1,29 @@
+sylius_twig_hooks:
+    hooks:
+        'cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.header':
+            breadcrumbs:
+                enabled: false
+
+        'cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.header.title_block':
+            title:
+                template: '@CylleneDigitalSyliusTarteaucitronPlugin/admin/configuration/update/content/header/title_block/title.html.twig'
+
+        'cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.header.title_block.actions':
+            # Sylius 2.1 renders `show` from a `configuration` this page does not have (500); there is
+            # no show page anyway.
+            show:
+                enabled: false
+            update:
+                enabled: false
+            cancel:
+                enabled: false
+            save:
+                template: '@CylleneDigitalSyliusTarteaucitronPlugin/admin/configuration/update/content/header/title_block/actions/save.html.twig'
+                priority: 0
+
+        'cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.form.sections.general':
+            default:
+                enabled: false
+            tarteaucitron:
+                template: '@CylleneDigitalSyliusTarteaucitronPlugin/admin/configuration/update/content/form/sections/general/tarteaucitron.html.twig'
+                priority: 0
