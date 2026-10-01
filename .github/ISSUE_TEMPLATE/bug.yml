@@ -1,0 +1,60 @@
+name: Report a bug
+description: Unexpected behaviour of the plugin
+labels: ["bug"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              ⚠️ **A security flaw is not reported here.** See [SECURITY.md](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/SECURITY.md).
+
+              **Never include** a customer pre-production URL, shop secret, or real tracker ID in a public issue.
+    - type: input
+      id: plugin-version
+      attributes:
+          label: Plugin version
+      validations:
+          required: true
+    - type: input
+      id: tarteaucitron-version
+      attributes:
+          label: Vendored tarteaucitron.js version
+          description: See `public/tarteaucitron/VERSION`
+      validations:
+          required: true
+    - type: input
+      id: sylius-version
+      attributes:
+          label: Sylius version
+      validations:
+          required: true
+    - type: input
+      id: php-version
+      attributes:
+          label: PHP version
+      validations:
+          required: true
+    - type: input
+      id: shop-locale
+      attributes:
+          label: Shop locale
+          description: e.g. `fr_FR`, `es_ES`
+      validations:
+          required: true
+    - type: textarea
+      id: expected
+      attributes:
+          label: Expected behaviour
+      validations:
+          required: true
+    - type: textarea
+      id: actual
+      attributes:
+          label: Observed behaviour
+      validations:
+          required: true
+    - type: textarea
+      id: steps
+      attributes:
+          label: Steps to reproduce
+      validations:
+          required: true

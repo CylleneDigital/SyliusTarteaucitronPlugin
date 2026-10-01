@@ -1,0 +1,59 @@
+name: Upstream tarteaucitron.js
+
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch: ~
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    name: "Compare vendored version with the latest release"
+
+    steps:
+      - uses: actions/checkout@v7
+
+      # One issue per upstream tag: the title carries the tag, so a later run finds it (open or
+      # closed) and does not reopen a bump that was already handled or deliberately skipped.
+      - name: Open an issue when a newer release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          vendored="$(tr -d '[:space:]' < public/tarteaucitron/VERSION)"
+          latest="$(gh api repos/AmauriC/tarteaucitron.js/releases/latest --jq .tag_name)"
+          if ! printf '%s' "${latest}" | grep -Eq '^v?[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Unexpected upstream tag: ${latest}" >&2
+            exit 1
+          fi
+
+          if [ "v${vendored}" = "${latest}" ] || [ "${vendored}" = "${latest}" ]; then
+            echo "Vendored ${vendored} is the latest release."
+            exit 0
+          fi
+
+          title="Upgrade vendored tarteaucitron.js to ${latest}"
+          existing="$(gh issue list --state all --search "\"${title}\" in:title" --json number --jq 'length')"
+          if [ "${existing}" != "0" ]; then
+            echo "Issue already exists for ${latest}."
+            exit 0
+          fi
+
+          gh issue create --title "${title}" --body "$(cat <<EOF
+          Vendored version: \`${vendored}\` — latest upstream release: [\`${latest}\`](https://github.com/AmauriC/tarteaucitron.js/releases/tag/${latest}).
+
+          \`\`\`bash
+          bin/update-tarteaucitron.sh ${latest}
+          vendor/bin/phpunit --colors=always --testsuite=unit
+          \`\`\`
+
+          A failure in \`VendorLibraryParityTest\` means upstream changed the \`user.*\` keys of a
+          built-in service: expose the key in the tracker, or list it in \`ACKNOWLEDGED_GAPS\`.
+          A failure in \`VendorInitOptionsParityTest\` means a new \`tarteaucitron.init()\` option:
+          add it to \`InitOptionCatalog\` (back office) or to \`IntegrationOptions\` (theme-level
+          \`integration:\` bundle configuration), or list it in that test's \`ACKNOWLEDGED_GAPS\`.
+          EOF
+          )"

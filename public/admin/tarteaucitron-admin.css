@@ -1,0 +1,25 @@
+#tarteaucitron-services-accordion .accordion-button::after {
+    display: none;
+}
+
+#tarteaucitron-services-accordion .accordion-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#tarteaucitron-services-accordion .accordion-chevron {
+    margin-left: auto;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+#tarteaucitron-services-accordion .accordion-button:not(.collapsed) .accordion-chevron {
+    transform: rotate(180deg);
+}
+
+/* The admin theme gives textareas a tall min-height; banner texts are one or two sentences. */
+#tarteaucitron-localized-accordion textarea {
+    min-height: 0;
+    height: auto;
+}

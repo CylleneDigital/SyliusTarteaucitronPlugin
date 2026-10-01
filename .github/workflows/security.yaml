@@ -1,0 +1,32 @@
+name: Security
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: ~
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch: ~
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    name: "Composer audit"
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --no-interaction --no-progress --prefer-dist
+
+      # `--abandoned=report` surfaces abandoned packages without failing the job: Sylius
+      # development dependencies may be abandoned without a security flaw.
+      - name: Audit dependencies
+        run: composer audit --ansi --abandoned=report

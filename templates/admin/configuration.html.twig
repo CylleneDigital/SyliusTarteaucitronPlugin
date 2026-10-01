@@ -1,0 +1,12 @@
+{% extends '@SyliusAdmin/shared/layout/base.html.twig' %}
+
+{% set prefixes = [
+    'cyllene_digital_sylius_tarteaucitron.admin.configuration',
+    'sylius_admin.common'
+] %}
+
+{% block title %}{{ 'cyllene_digital_sylius_tarteaucitron.ui.tarteaucitron_configuration'|trans }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    {% hook 'update' with { _prefixes: prefixes, form, channel, channels } %}
+{% endblock %}

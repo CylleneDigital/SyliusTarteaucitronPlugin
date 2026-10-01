@@ -1,0 +1,5 @@
+# Maintainers are automatically assigned to pull requests.
+#
+# Only a user or a team is accepted here, never the organisation itself, and a team only counts
+# once it has write access to this repository.
+* @CylleneDigital/maintainers

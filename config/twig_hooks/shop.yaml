@@ -1,0 +1,6 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_shop.base.head':
+            tarteaucitron:
+                template: '@CylleneDigitalSyliusTarteaucitronPlugin/shop/tarteaucitron.html.twig'
+                priority: 100

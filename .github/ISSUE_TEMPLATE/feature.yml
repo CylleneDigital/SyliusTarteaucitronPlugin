@@ -1,0 +1,32 @@
+name: Suggest an improvement
+description: A feature or an enhancement
+labels: ["enhancement"]
+body:
+    - type: textarea
+      id: problem
+      attributes:
+          label: The need
+          description: "What concrete problem are you running into? Describe the situation, not the solution."
+      validations:
+          required: true
+    - type: textarea
+      id: proposal
+      attributes:
+          label: What you suggest
+    - type: dropdown
+      id: scope
+      attributes:
+          label: This concerns
+          options:
+              - Consent banner / shop front
+              - Back-office configuration
+              - Tracker catalogue / custom trackers
+              - Documentation
+              - Something else
+      validations:
+          required: true
+    - type: markdown
+      attributes:
+          value: |
+              Shop-specific consent policies and hard-coded third-party scripts stay in the project
+              that uses the plugin — see CONTRIBUTING.md.
