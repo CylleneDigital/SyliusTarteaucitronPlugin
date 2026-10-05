@@ -96,6 +96,18 @@ final class TarteaucitronConfigurationActionTest extends WebTestCase
         self::assertSelectorExists('script[nonce="adm1n"]');
     }
 
+    public function testLocaleHeaderIsRenderedThroughItsHook(): void
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', self::URL);
+
+        $header = $crawler->filter('#tarteaucitron-localized-accordion .accordion-button');
+        self::assertCount(1, $header);
+        self::assertStringStartsWith('English (United States)', trim($header->text()));
+        self::assertSame('en_US', $header->filter('span.text-secondary')->text());
+    }
+
     public function testInvalidSubmissionSavesNothing(): void
     {
         $this->logIn();

@@ -24,6 +24,7 @@ Sylius Admin resolves hooks prefixed `cyllene_digital_sylius_tarteaucitron.admin
 | `cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.header.title_block.actions` | `save` | Custom save button |
 | `cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.form.sections.general` | `default` | **disabled** |
 | `cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.form.sections.general` | `tarteaucitron` | **Plugin form** |
+| `cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.form.sections.general.locale_header` | `name`, `code` | Header of each locale in the "Texts and languages" tab |
 
 ## Main form template
 
@@ -40,7 +41,8 @@ Structure:
   - **Compliance**: consent collection card, then the Consent Mode card (each option boxed, with the
     related services and the Google / Bing alert);
   - **Texts and languages**: one accordion item per channel locale, with the two links and the eight
-    banner texts (`localized_options`);
+    banner texts (`localized_options`). Each item header renders the `locale_header` hook (see
+    [Locale header](#locale-header));
   - **Appearance**: display options;
   - **Advanced**: `cookie_name`, `cookie_domain`, `data_layer`.
 
@@ -71,6 +73,31 @@ Admin assets: `public/admin/tarteaucitron-admin.css` and `public/admin/tarteauci
 |------|------|
 | `.../title_block/title.html.twig` | Page title + current channel (always shown; dropdown when several) |
 | `.../title_block/actions/save.html.twig` | Save button |
+| `.../sections/general/locale_header/name.html.twig` | Locale name in a "Texts and languages" header |
+| `.../sections/general/locale_header/code.html.twig` | Locale code next to it, in grey |
+
+## Locale header
+
+The main template renders, inside each "Texts and languages" accordion button:
+
+```twig
+{% hook 'locale_header' with { locale_code: locale.vars.name, locale_name: locale.vars.label } %}
+```
+
+Its hookables read `hookable_metadata.context.locale_code` and `hookable_metadata.context.locale_name`.
+To show something else before the code, a flag for instance, replace the `name` hookable in the
+application:
+
+```yaml
+sylius_twig_hooks:
+    hooks:
+        'cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.form.sections.general.locale_header':
+            name:
+                template: 'admin/tarteaucitron/locale_header/name.html.twig'
+```
+
+The hook, its hookables and its two context keys are part of the
+[public contract](../architecture/public-contract.md#admin-hooks-and-route).
 
 ## Admin Twig functions
 

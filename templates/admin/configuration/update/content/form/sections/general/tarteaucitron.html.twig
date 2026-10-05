@@ -122,8 +122,7 @@
                                         <div class="accordion-item">
                                             <h3 class="accordion-header">
                                                 <button class="accordion-button{% if not open %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#{{ collapse_id }}" aria-expanded="{{ open ? 'true' : 'false' }}" aria-controls="{{ collapse_id }}">
-                                                    {{ locale.vars.label }}
-                                                    <span class="text-secondary ms-2">{{ locale.vars.name }}</span>
+                                                    {% hook 'locale_header' with { locale_code: locale.vars.name, locale_name: locale.vars.label } %}
                                                 </button>
                                             </h3>
                                             <div id="{{ collapse_id }}" class="accordion-collapse collapse{% if open %} show{% endif %}">
