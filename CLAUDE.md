@@ -87,6 +87,12 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   [`docs/domain/init-options.md`](docs/domain/init-options.md#library-limits-tarteaucitronjs-1350).
 - The library only opens the banner when an enabled service needs consent: banner scenarios enable
   `youtube`.
+- **tarteaucitron.js DOM traps for tests**: `#tarteaucitronPersonalize2` is the "accept all"
+  button and `#tarteaucitronCloseAlert` opens the panel ("Personalize"); the banner title
+  (`middleBarHead`) is CSS `::before` content, absent from `innerText`; `.tarteaucitronOpenPanel`
+  elements are wired once, on the window `load` event, so one added later does nothing.
+- **The admin route accepts `PUT` on purpose**: once the configuration has an id, Sylius' form
+  template posts `_method=PUT`, and the form only submits when the methods match.
 - A service switched on in the back office with a required parameter left empty is **not**
   emitted on the shop (no job, no category in the panel).
 - The dev fixtures create two channels: Sylius then resolves the channel by host name, so
@@ -137,15 +143,19 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   has to do.
 - **The Flex recipe is not in this repository** (it goes to `symfony/recipes-contrib`): a change to
   the bundle configuration keys or defaults, to `config/routes.yaml` or to the install steps
-  (assets, migration) must be carried over to it.
+  (assets, migration) must be carried over to it. Its configuration file stays fully commented,
+  root key included, with `null` rather than `~`: the recipes-contrib checks reject an empty root
+  key and any `: ~`, even in a comment.
+- **Maintainer procedures stay out of the repository** (release, upstream watch, GitHub settings):
+  public docs serve shop admins, integrators and contributors only.
 
 ## Keeping the docs in step
 
 The same facts live in several places; change one, change them all:
 
 - the CI steps: `.github/workflows/build.yaml`, `CONTRIBUTING.md` and `docs/testing/unit-tests.md`;
-- the shop template: `templates/shop/tarteaucitron.html.twig`, copied in `docs/shop/injection.md`
-  and walked through in `docs/architecture/overview.md` and `docs/diagrams/shop-render-sequence.md`;
+- the shop template: `templates/shop/tarteaucitron.html.twig`, copied verbatim in
+  `docs/shop/injection.md` and walked through in `docs/architecture/overview.md` and `docs/diagrams/shop-render-sequence.md`;
 - the Behat counts (scenarios, `@javascript`): `README.md`, `CONTRIBUTING.md`,
   `docs/testing/unit-tests.md`;
 - the public Twig functions and bundle keys: `docs/architecture/public-contract.md` and
