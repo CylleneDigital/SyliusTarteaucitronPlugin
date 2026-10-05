@@ -56,10 +56,14 @@ visitor data to `tarteaucitron.io` or `logs.tarteaucitron.io`.
 ## Installation
 
 ```bash
+composer config extra.symfony.allow-contrib true
 composer require cyllene-digital/sylius-tarteaucitron-plugin
 ```
 
-Register the bundle (the Flex recipe that will do it is not published yet):
+The [Flex recipe](https://github.com/symfony/recipes-contrib/tree/main/cyllene-digital/sylius-tarteaucitron-plugin)
+registers the bundle, imports the routes and adds a commented
+`config/packages/cyllene_digital_sylius_tarteaucitron.yaml`. Without Flex, or with contrib recipes
+off, do it by hand. Register the bundle:
 
 ```php
 // config/bundles.php

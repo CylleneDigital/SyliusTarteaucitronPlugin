@@ -69,9 +69,10 @@ cyllene_digital_sylius_tarteaucitron:
      integrators write it.
    - The pull request description (optional key, default keeps current behaviour): it feeds the
      release notes, `UPGRADE.md` only lists breaks.
-   - The Flex recipe's commented `config/packages/cyllene_digital_sylius_tarteaucitron.yaml`, once
-     the recipe is published on `symfony/recipes-contrib`: mention the key in the pull request, a
-     maintainer carries it over.
+   - The Flex recipe's commented
+     [`config/packages/cyllene_digital_sylius_tarteaucitron.yaml`](https://github.com/symfony/recipes-contrib/blob/main/cyllene-digital/sylius-tarteaucitron-plugin/1.0/config/packages/cyllene_digital_sylius_tarteaucitron.yaml)
+     on `symfony/recipes-contrib`: mention the key in the pull request, a maintainer carries it
+     over.
 6. Run the checks:
 
 ```bash
