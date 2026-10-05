@@ -94,6 +94,18 @@ plugin's own back-office template. Details: [Twig functions](../shop/twig-functi
 An application may add, move or disable hookables under these hooks and link to the route. The
 templates the plugin's own hookables render are internal. See [Admin Twig Hooks](../admin/twig-hooks-admin.md).
 
+The header of each locale in the "Texts and languages" tab is its own hook, rendered once per
+channel locale, so a project can change it without copying the page template:
+
+| Element | Value |
+|---------|-------|
+| Hook | `cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.form.sections.general.locale_header` |
+| Hookables | `name` (priority `100`), `code` (priority `0`) |
+| Context | `locale_code` (e.g. `fr_FR`), `locale_name` (the locale name in the admin's language) |
+
+The hook name, the two hookable names and the two context keys are stable. Other keys the context
+may carry are not.
+
 ## Database tables
 
 - `cyllene_tarteaucitron_configuration`

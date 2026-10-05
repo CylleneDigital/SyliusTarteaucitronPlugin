@@ -27,3 +27,12 @@ sylius_twig_hooks:
             tarteaucitron:
                 template: '@CylleneDigitalSyliusTarteaucitronPlugin/admin/configuration/update/content/form/sections/general/tarteaucitron.html.twig'
                 priority: 0
+
+        # Header of each locale in the "Texts and languages" tab, rendered once per channel locale.
+        'cyllene_digital_sylius_tarteaucitron.admin.configuration.update.content.form.sections.general.locale_header':
+            name:
+                template: '@CylleneDigitalSyliusTarteaucitronPlugin/admin/configuration/update/content/form/sections/general/locale_header/name.html.twig'
+                priority: 100
+            code:
+                template: '@CylleneDigitalSyliusTarteaucitronPlugin/admin/configuration/update/content/form/sections/general/locale_header/code.html.twig'
+                priority: 0
