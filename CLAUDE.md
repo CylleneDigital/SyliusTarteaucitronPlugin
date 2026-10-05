@@ -141,11 +141,12 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   breaks in a major version, with an entry in `UPGRADE.md`.
 - **No `CHANGELOG.md`**: the GitHub release notes are the changelog, `UPGRADE.md` says what a shop
   has to do.
-- **The Flex recipe is not in this repository** (it goes to `symfony/recipes-contrib`): a change to
-  the bundle configuration keys or defaults, to `config/routes.yaml` or to the install steps
-  (assets, migration) must be carried over to it. Its configuration file stays fully commented,
-  root key included, with `null` rather than `~`: the recipes-contrib checks reject an empty root
-  key and any `: ~`, even in a comment.
+- **The Flex recipe is not in this repository** (it lives in `symfony/recipes-contrib`,
+  `cyllene-digital/sylius-tarteaucitron-plugin/1.0/`): a change to the bundle configuration keys or
+  defaults, to `config/routes.yaml` or to the install steps (assets, migration) must be carried over
+  to it through a pull request there, and to the manual steps of the README `Installation` section.
+  Its configuration file stays fully commented, root key included, with `null` rather than `~`: the
+  recipes-contrib checks reject an empty root key and any `: ~`, even in a comment.
 - **Maintainer procedures stay out of the repository** (release, upstream watch, GitHub settings):
   public docs serve shop admins, integrators and contributors only.
 
