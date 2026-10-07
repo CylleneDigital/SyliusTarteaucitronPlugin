@@ -12,6 +12,18 @@
         "tarteaucitron"
     ],
     "license": "MIT",
+    "homepage": "https://github.com/CylleneDigital/SyliusTarteaucitronPlugin",
+    "authors": [
+        {
+            "name": "Cyllene",
+            "homepage": "https://github.com/CylleneDigital"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/issues",
+        "source": "https://github.com/CylleneDigital/SyliusTarteaucitronPlugin",
+        "security": "https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/security/policy"
+    },
     "require": {
         "php": "^8.2",
         "doctrine/collections": "^2.0",
@@ -52,7 +64,7 @@
         "sylius-labs/behat-chrome-extension": "^1.5",
         "sylius-labs/coding-standard": "^4.4",
         "sylius-labs/suite-tags-extension": "~0.2",
-        "sylius/test-application": "^2.0.0@alpha",
+        "sylius/test-application": "~2.1.0@alpha || ~2.2.0@alpha || ~2.3.0@alpha",
         "symfony/browser-kit": "^7.4 || ^8.0",
         "symfony/debug-bundle": "^7.4 || ^8.0",
         "symfony/dotenv": "^7.4 || ^8.0",
