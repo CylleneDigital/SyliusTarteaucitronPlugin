@@ -72,15 +72,18 @@ and a tarteaucitron configuration with services on for both channels:
 vendor/bin/console sylius:fixtures:load default -n
 ```
 
-With two channels, Sylius picks the channel from the host name: set the host you browse the shop on
-in `tests/TestApplication/.env.dev.local` **before** loading the fixtures (`FASHION_WEB` takes it,
-`B2B_WEB` takes `b2b.` + it):
+Sylius picks the channel from the host name. `FASHION_WEB` takes `SYLIUS_FIXTURES_HOSTNAME`, which
+defaults to `localhost` (`127.0.0.1` matches it too), and `B2B_WEB` takes `b2b.` + it: browsing on
+`localhost`, as the Docker stack and the PHP built-in server do, needs no setting. Only for another
+host name (a local domain behind a reverse proxy), set it **before** loading the fixtures, in
+`tests/TestApplication/.env.dev.local` (`.env.test.local` with the Docker stack, which runs in the
+test environment):
 
 ```dotenv
-SYLIUS_FIXTURES_HOSTNAME=localhost
+SYLIUS_FIXTURES_HOSTNAME=shop.example.localhost
 ```
 
-In the dev environment, `?_channel_code=B2B_WEB` switches the shop to the second channel (kept in a
+In debug mode, `?_channel_code=B2B_WEB` also switches the shop to the second channel (kept in a
 cookie; `?_channel_code=FASHION_WEB` to come back).
 
 ### Behat
