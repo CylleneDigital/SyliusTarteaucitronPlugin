@@ -156,6 +156,8 @@ final class TarteaucitronConfigurationRepositoryTest extends KernelTestCase
         \assert($created instanceof LocaleInterface || $created instanceof CurrencyInterface);
         $created->setCode($code);
         $this->entityManager->persist($created);
+        // findOneBy() above only sees flushed rows: the second channel would persist a duplicate code.
+        $this->entityManager->flush();
 
         return $created;
     }
