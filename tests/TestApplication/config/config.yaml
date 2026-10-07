@@ -46,6 +46,8 @@ sylius_fixtures:
                                 locales:
                                     - '%locale%'
                                     - 'fr_FR'
+                                # Otherwise picked at random among the locales.
+                                default_locale: '%locale%'
                             b2b_web_store:
                                 name: 'B2B Web Store'
                                 code: 'B2B_WEB'
