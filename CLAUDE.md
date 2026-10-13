@@ -59,9 +59,6 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 - **Sylius migrations on MariaDB with DBAL 4** skip themselves (`isMySql()` is false for
   `MariaDBPlatform`), so `sylius_channel` never exists and the plugin migration fails on its
   foreign key. DBAL 4 comes with Symfony 8 / Sylius 2.3: the CI MariaDB job stays on Sylius 2.2.
-- **`SyliusLabs/BuildTestAppAction` writes `serverVersion=11.4` for MariaDB**: DBAL then picks the
-  MySQL platform and the migration check reports the JSON columns as drift. `build.yaml` rewrites
-  it to `mariadb-11.4.0` (DBAL wants three version parts after `mariadb-`).
 - **Sylius 2.1 / 2.2 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI
   caps the ORM below 3.7 for those lines only, the plugin's own constraint stays open. A local
   `vendor/` resolved before 3.7 does not show it.
