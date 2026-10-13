@@ -157,7 +157,10 @@ The same facts live in several places; change one, change them all:
 - the Behat counts (scenarios, `@javascript`): `README.md`, `CONTRIBUTING.md`,
   `docs/testing/unit-tests.md`;
 - the public Twig functions and bundle keys: `docs/architecture/public-contract.md` and
-  `docs/shop/twig-functions.md`.
+  `docs/shop/twig-functions.md`;
+- the vendored library version: the `README.md` compatibility table, `docs/images/banner.svg`
+  (a `<text>` line, missed by a grep over `*.md`), the "Library limits" heading of
+  `docs/domain/init-options.md` and the checksum example in `docs/integration/assets.md`.
 
 ## What does not belong here
 
