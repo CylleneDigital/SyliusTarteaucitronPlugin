@@ -39,7 +39,7 @@ visitor data to `tarteaucitron.io` or `logs.tarteaucitron.io`.
 | PHP | `^8.2` (Sylius 2.3: `^8.3`; Symfony 8: `^8.4`) |
 | Sylius | `2.1`, `2.2`, `2.3` |
 | Symfony | `^7.4`, or `^8.0` with Sylius 2.3 |
-| tarteaucitron.js (vendored) | see `public/tarteaucitron/VERSION` (1.35.0) |
+| tarteaucitron.js (vendored) | see `public/tarteaucitron/VERSION` (1.36.0) |
 
 ## What this plugin does not do
 

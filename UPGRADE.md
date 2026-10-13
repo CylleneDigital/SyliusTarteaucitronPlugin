@@ -9,3 +9,11 @@ Twig function - can silently hide the banner or change what it loads before cons
 must therefore be written here before it is released, together with the exact steps to carry out.
 
 `v1.0.0` is the first release: there is nothing to upgrade from yet.
+
+## Library upgrades within 1.x
+
+Run `bin/console assets:install` after `composer update` to publish the new library files.
+
+- **tarteaucitron.js 1.36.0**: the library now asks for consent before loading Crisp (`crisp`
+  moved to `needConsent: true`). A shop with Crisp enabled no longer shows the chat until the
+  visitor accepts the service.
