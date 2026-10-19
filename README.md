@@ -39,7 +39,7 @@ visitor data to `tarteaucitron.io` or `logs.tarteaucitron.io`.
 | PHP | `^8.2` (Sylius 2.3: `^8.3`; Symfony 8: `^8.4`) |
 | Sylius | `2.1`, `2.2`, `2.3` |
 | Symfony | `^7.4`, or `^8.0` with Sylius 2.3 |
-| tarteaucitron.js (vendored) | see `public/tarteaucitron/VERSION` (1.36.0) |
+| tarteaucitron.js (vendored) | see `public/tarteaucitron/VERSION` (1.37.0) |
 
 ## What this plugin does not do
 
@@ -225,7 +225,7 @@ MySQL, MariaDB and PostgreSQL, every Behat scenario included.
 Two limits come from elsewhere: Sylius 2.3 on **MariaDB with DBAL 4** skips its own migrations
 ([details](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/persistence/migrations.md)),
 and a few tarteaucitron.js options are ignored in some setups - the back office says so next to
-the option ([list](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/domain/init-options.md#library-limits-tarteaucitronjs-1350)).
+the option ([list](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/domain/init-options.md#library-limits-tarteaucitronjs-1370)).
 
 The scope stops at the free tarteaucitron.js install: no server-side proof-of-consent log, no
 consent for scripts loaded outside the plugin (see "What this plugin does not do").
