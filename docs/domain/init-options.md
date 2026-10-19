@@ -104,7 +104,7 @@ Flags:
 Choices are stored as strings; `InitOptionsMapper` emits `'true'` / `'false'` as JavaScript booleans,
 since tarteaucitron.js compares `serviceDefaultState` with `true` / `false` strictly.
 
-## Library limits (tarteaucitron.js 1.36.0)
+## Library limits (tarteaucitron.js 1.37.0)
 
 Options the library accepts but ignores in some setups. The back office says so next to the field
 (`OptionConflicts`, an info box, not a CNIL warning); re-check this list after each library upgrade.

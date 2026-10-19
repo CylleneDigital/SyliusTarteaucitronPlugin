@@ -85,7 +85,7 @@ Never copy files by hand: `bin/update-tarteaucitron.sh` takes the **whole** upst
 `css/sylius-fix.css`, and writes `VERSION` plus `SOURCE` (tag, archive URL, archive sha256).
 
 ```bash
-bin/update-tarteaucitron.sh v1.36.0 117ac5ecaa2d1b6befca61610366f46dd23cee15f0f4755d2dc2952b6abf26d5
+bin/update-tarteaucitron.sh v1.37.0 720f353da41842ed8b58333fe41a0ab0e0ab0aa9720181f751a4a3d88bc503f0
 ```
 
 The second argument is optional: when given, the archive is refused if its sha256 differs. The
