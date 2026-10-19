@@ -62,6 +62,10 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 - **Sylius 2.1 / 2.2 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI
   caps the ORM below 3.7 for those lines only, the plugin's own constraint stays open. A local
   `vendor/` resolved before 3.7 does not show it.
+- **`tests/TestApplication/package.json` raises `@symfony/stimulus-bridge` to `^4.0.2`**: the test
+  application's `preinstall` merges it into its own `package.json`. The 3.x loader requires
+  `webpack/lib/dependencies/LoaderDependency`, gone since webpack 5.112, and the Sylius 2.1 front
+  build fails on it (`yarn install` runs without a lockfile).
 - **`friends-of-behat/symfony-extension` stays at `^2.6.2`**: 2.7 needs PHP 8.3, and Composer
   (CI and Dependabot alike) resolves the PHP 8.2 lines with 2.6.2. Do not raise it to `^2.7` while
   `php` is `^8.2`.
