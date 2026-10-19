@@ -81,7 +81,7 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   lost. With the ad-blocker detection on (`integration.adblocker`, on in the test environment),
   the library builds its panel late; the template creates `tarteaucitron.job` so the library does
   not crash before wiring anything when no service is enabled. Other library limits:
-  [`docs/domain/init-options.md`](docs/domain/init-options.md#library-limits-tarteaucitronjs-1350).
+  [`docs/domain/init-options.md`](docs/domain/init-options.md#library-limits-tarteaucitronjs-1370).
 - The library only opens the banner when an enabled service needs consent: banner scenarios enable
   `youtube`.
 - **tarteaucitron.js DOM traps for tests**: `#tarteaucitronPersonalize2` is the "accept all"
@@ -160,7 +160,8 @@ The same facts live in several places; change one, change them all:
   `docs/shop/twig-functions.md`;
 - the vendored library version: the `README.md` compatibility table, `docs/images/banner.svg`
   (a `<text>` line, missed by a grep over `*.md`), the "Library limits" heading of
-  `docs/domain/init-options.md` and the checksum example in `docs/integration/assets.md`.
+  `docs/domain/init-options.md` (its anchor is linked from `README.md` and this file) and the
+  checksum example in `docs/integration/assets.md`.
 
 ## What does not belong here
 
