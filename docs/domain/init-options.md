@@ -94,6 +94,8 @@ Flags:
 
 ### Choices
 
+Decision: [0013. Choices are stored as strings](../adr/0013-choices-stored-as-strings.md).
+
 | key | Allowed values |
 |-----|----------------|
 | `body_position` | `top`, `bottom` |
@@ -105,6 +107,8 @@ Choices are stored as strings; `InitOptionsMapper` emits `'true'` / `'false'` as
 since tarteaucitron.js compares `serviceDefaultState` with `true` / `false` strictly.
 
 ## Library limits (tarteaucitron.js 1.37.0)
+
+Decision: [0004. Upstream behaviour is followed, not modelled](../adr/0004-upstream-behaviour-followed-not-modelled.md).
 
 Options the library accepts but ignores in some setups. The back office says so next to the field
 (`OptionConflicts`, an info box, not a CNIL warning); re-check this list after each library upgrade.
@@ -120,6 +124,8 @@ With no service enabled and the ad-blocker detection on, the library also read
 any button (icon, panel). `templates/shop/tarteaucitron.html.twig` creates the array after `init()`.
 
 ## Normalization (`InitOptions::fromArray`)
+
+Decisions: [0011. Init options are a JSON map rewritten whole on save](../adr/0011-init-options-json-map-rewritten-whole-on-save.md), [0017. Links, icon and texts are validated on write and again on read](../adr/0017-links-icon-texts-validated-on-write-and-read.md).
 
 1. For each catalog option, read raw value if present
 2. Otherwise use `InitOption::default`
@@ -156,6 +162,8 @@ locale's links when the admin set them.
 on a new back-office entity.
 
 ## Per-locale links and texts (`LocalizedOptions`)
+
+Decision: [0026. Per-locale links and texts are limited to the banner essentials](../adr/0026-per-locale-links-and-texts-limited-to-banner-essentials.md).
 
 Not init options: stored apart in `localized_options`, `{localeCode: {key: value}}`, edited in the
 "Texts and languages" tab (one block per **channel locale**, default locale first).

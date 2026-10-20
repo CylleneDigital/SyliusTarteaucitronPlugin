@@ -109,6 +109,8 @@ cyllene_digital_sylius_tarteaucitron:
 
 ### 4. Verify type uniqueness
 
+Decision: [0008. One tracker per job key, duplicates refused](../adr/0008-one-tracker-per-job-key-duplicates-refused.md).
+
 The job key must not be used by another tracker. Two trackers on the same job key fail the container
 build (`UniqueTrackerTypePass`) when the pass can read the type without running the app: `trackers:`
 entries, and classes whose service definition passes no argument, method call, factory or

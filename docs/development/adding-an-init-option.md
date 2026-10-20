@@ -8,6 +8,8 @@ deliberately listed as a gap).
 
 ## Back office or `integration:`?
 
+Decision: [0006. Per-channel options in the back office, theme-level options in configuration](../adr/0006-channel-options-in-back-office-theme-options-in-configuration.md).
+
 | The option… | Goes to |
 |---|---|
 | is a consent / display choice a shop admin makes per channel | `InitOptionCatalog` - this checklist |
@@ -102,6 +104,8 @@ plus `piwik_consent_mode` / `piwik_consent_mode_help` in both translation files.
    contract, release note).
 
 ## Not exposing an option
+
+Decision: [0003. Every upstream init option and built-in service key is exposed or listed as a gap](../adr/0003-every-upstream-option-exposed-or-listed-as-a-gap.md).
 
 When an upstream option must stay out of the BO (callback, value only meaningful in code), list its
 `jsKey` in `VendorInitOptionsParityTest::ACKNOWLEDGED_GAPS` and give the reason in the PR. The test

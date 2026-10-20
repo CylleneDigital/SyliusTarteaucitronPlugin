@@ -15,6 +15,8 @@ cyllene_digital_sylius_tarteaucitron:
 
 ## Bundle config or init option?
 
+Decision: [0006. Per-channel options in the back office, theme-level options in configuration](../adr/0006-channel-options-in-back-office-theme-options-in-configuration.md).
+
 | Need | Where |
 |---|---|
 | A `tarteaucitron.init()` option a shop admin tunes per channel | Init option - [adding-an-init-option.md](adding-an-init-option.md) |

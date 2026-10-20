@@ -2,6 +2,8 @@
 
 ## Bundle class
 
+Decision: [0033. A `Bundle` class with `SyliusPluginTrait`, not `AbstractBundle`](../adr/0033-bundle-class-with-sylius-plugin-trait.md).
+
 ```php
 // src/CylleneDigitalSyliusTarteaucitronPlugin.php
 final class CylleneDigitalSyliusTarteaucitronPlugin extends Bundle
@@ -70,6 +72,8 @@ The extension extends `Extension` and implements `PrependExtensionInterface`.
 
 ### `prepend()` phase - Symfony/Sylius configuration
 
+Decision: [0035. Twig hooks are prepended by the extension](../adr/0035-twig-hooks-prepended-by-the-extension.md).
+
 | Target extension | Action |
 |------------------|--------|
 | `sylius_twig_hooks` | Globs every `config/twig_hooks/**/*.yaml` |
@@ -92,6 +96,8 @@ Prepend ensures the plugin works without manual configuration in the host applic
 | `menu.php` | `AdminMenuListener` |
 
 ## Service ids
+
+Decision: [0032. Services are declared explicitly, without autowiring](../adr/0032-explicit-services-no-autowiring.md).
 
 All the services below are **internal**: ids, classes and constructor arguments can change in a
 minor version (see [Substitution in host application](#substitution-in-host-application)).
@@ -129,6 +135,8 @@ let the host application autowire these `@internal` classes.
 
 ## TrackerRegistry - tracker locator
 
+Decision: [0008. One tracker per job key, duplicates refused](../adr/0008-one-tracker-per-job-key-duplicates-refused.md).
+
 The service is declared without arguments (`config/services/tracker.php`): `UniqueTrackerTypePass`
 sets them. For every tagged tracker whose job key is known at compile time (built-ins and
 `trackers:` entries, constructible without arguments), it adds a locator entry keyed by job key;
@@ -157,6 +165,8 @@ Dependencies:
 Implements `ResetInterface` to clear cache between requests. Tagged `kernel.reset` in `config/services/provider.php` (the plugin services are not autoconfigured).
 
 ## Twig runtimes
+
+Decision: [0034. Twig functions are served by lazy runtimes](../adr/0034-twig-functions-served-by-lazy-runtimes.md).
 
 Runtimes registered as services in `config/services/twig.php` - required for Twig 3 lazy-loading.
 The shop runtime receives `cyllene_digital_sylius_tarteaucitron.csp.script_nonce_provider`, a

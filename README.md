@@ -43,6 +43,8 @@ visitor data to `tarteaucitron.io` or `logs.tarteaucitron.io`.
 
 ## What this plugin does not do
 
+Why the scope stops here: [decision record](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/adr/0037-scope-limited-to-the-free-library-wiring.md).
+
 - It only gates services declared in its back office (tarteaucitron job keys). A script
   hardcoded in the theme, or a tag loaded by GTM outside this plugin, is **not** under
   consent.

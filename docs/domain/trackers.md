@@ -148,6 +148,8 @@ Decision: [0008. One tracker per job key, duplicates refused](../adr/0008-one-tr
 
 ## JavaScript rendering
 
+Decision: [0016. Every value written into JavaScript goes through InlineJson](../adr/0016-javascript-values-encoded-by-inline-json.md).
+
 `TrackerScriptRenderer` turns the enabled services of the channel into the snippets printed after
 `tarteaucitron.init()`. Its input is a list of `TrackerRuntimeState` (job key + parameters), built by
 `ConsentConfigurationProvider` from `findShopConsentByChannel()`, which only reads enabled services;

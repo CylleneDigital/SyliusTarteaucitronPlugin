@@ -236,4 +236,5 @@ Sylius plugins, do not add personal rules to it.
 
 Shop-specific consent policies, custom themes, or hard-coded third-party scripts stay in the
 project that uses the plugin. This repository only carries the Sylius wiring around the free,
-self-hosted [tarteaucitron.js](https://github.com/AmauriC/tarteaucitron.js) library.
+self-hosted [tarteaucitron.js](https://github.com/AmauriC/tarteaucitron.js) library
+([why](docs/adr/0037-scope-limited-to-the-free-library-wiring.md)).

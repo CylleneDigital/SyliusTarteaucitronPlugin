@@ -1,5 +1,7 @@
 # Database schema
 
+Decision: [0010. Plugin-owned tables, one configuration per channel](../adr/0010-plugin-owned-tables-one-configuration-per-channel.md).
+
 ## Relational diagram
 
 ```
@@ -47,7 +49,8 @@ key: `FK_TAC_SERVICE_CONFIGURATION`.
 
 - Implements `ChannelAwareInterface`
 - `services` collection indexed by `type` (`indexBy: 'type'`)
-- Cascade persist/remove on services, orphanRemoval
+- Cascade persist/remove on services, orphanRemoval (never triggered: the form neither adds nor
+  removes services, and no row is ever removed)
 
 ### `TarteaucitronService`
 
@@ -56,6 +59,8 @@ key: `FK_TAC_SERVICE_CONFIGURATION`.
 - `getParameter(key): string` (empty string when unset) / `setParameters(array)`
 
 ## Repository
+
+Decision: [0020. The shop reads the enabled services as arrays, once per request](../adr/0020-shop-reads-enabled-services-as-arrays-per-request.md).
 
 Only the configuration has a repository, `TarteaucitronConfigurationRepository`
 (`TarteaucitronConfigurationRepositoryInterface`), with two reads:

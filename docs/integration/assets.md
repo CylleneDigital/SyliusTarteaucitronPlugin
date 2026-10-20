@@ -1,5 +1,7 @@
 # Vendored assets (tarteaucitron.js)
 
+Decision: [0001. tarteaucitron.js is vendored and self-hosted, never loaded from a CDN](../adr/0001-library-vendored-and-self-hosted.md).
+
 Self-hosted copy of the [official free install](https://tarteaucitron.io/en/free-installation-open-source/).
 The library resolves `css/`, `lang/`, `tarteaucitron.services.min.js` and `advertising.min.js`
 from `document.currentScript.src`. Files must live next to `tarteaucitron.min.js` - do not
