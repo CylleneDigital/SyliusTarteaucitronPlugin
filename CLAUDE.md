@@ -63,8 +63,10 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   `MariaDBPlatform`, fixed in 2.3.1 by Sylius#19272), so `sylius_channel` never exists and the
   plugin migration fails on its foreign key. Sylius 2.1 and 2.2 stay on DBAL 3. The CI MariaDB job
   resolves 2.3.1 or later, declared as such (`serverVersion=11.4.0-MariaDB`).
-- **Sylius 2.1 / 2.2 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI
-  caps the ORM below 3.7 for those lines only, the plugin's own constraint stays open
+- **Sylius 2.1 / 2.2 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`). Sylius
+  2.2.11 declares a conflict with ORM 3.7 (Sylius#19251), but it does not protect the 2.2 line:
+  without a cap, Composer resolves `~2.2.0` to an older 2.2 (2.2.9) with ORM 3.7. CI caps the ORM
+  below 3.7 before Sylius 2.3, the plugin's own constraint stays open
   ([0036](docs/adr/0036-no-dependency-cap-for-an-upstream-bug.md)). A local `vendor/` resolved
   before 3.7 does not show it.
 - **`tests/TestApplication/package.json` raises `@symfony/stimulus-bridge` to `^4.0.2`**: the test
