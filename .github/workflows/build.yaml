@@ -56,11 +56,10 @@ jobs:
                         symfony: "^8.0"
                         php: "8.3"
                 include:
-                    # Not on Sylius 2.3: with DBAL 4 its migrations only recognise MySQL and skip MariaDB.
                     -
                         php: "8.4"
-                        symfony: "^7.4"
-                        sylius: "~2.2.0"
+                        symfony: "^8.0"
+                        sylius: "~2.3.0"
                         database: "mariadb:11.4"
                         node: "22.x"
                     -
