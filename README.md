@@ -222,10 +222,11 @@ on a test application with two channels, one of them in English and French.
 The continuous integration matrix covers Sylius 2.1 to 2.3, PHP 8.2 to 8.5, Symfony 7.4 and 8, on
 MySQL, MariaDB and PostgreSQL, every Behat scenario included.
 
-Two limits come from elsewhere: Sylius 2.3 on **MariaDB with DBAL 4** skips its own migrations
-([details](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/persistence/migrations.md)),
-and a few tarteaucitron.js options are ignored in some setups - the back office says so next to
-the option ([list](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/domain/init-options.md#library-limits-tarteaucitronjs-1370)).
+On **MariaDB with DBAL 4**, use Sylius 2.3.1 or later: Sylius 2.3.0 skips its own migrations there
+([details](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/persistence/migrations.md)).
+
+One limit comes from the library: a few tarteaucitron.js options are ignored in some setups - the
+back office says so next to the option ([list](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/domain/init-options.md#library-limits-tarteaucitronjs-1370)).
 
 The scope stops at the free tarteaucitron.js install: no server-side proof-of-consent log, no
 consent for scripts loaded outside the plugin (see "What this plugin does not do").

@@ -20,10 +20,11 @@ The migration is written against the DBAL `Schema` API only (`createTable`, `add
 MariaDB 11.4 and PostgreSQL 17**. Other platforms (SQLite…) are not tested; the migration uses only
 portable Schema API calls.
 
-The MariaDB job runs Sylius 2.2: with DBAL 4 (required by Symfony 8, possible from Sylius 2.3), the
-Sylius core migrations only recognise MySQL and skip themselves on MariaDB, so `sylius_channel` is
-never created and the plugin migration cannot add its foreign key. That is a Sylius limitation:
-with DBAL 3 the MariaDB platform extends the MySQL one, and the Sylius migrations run.
+On MariaDB with DBAL 4 (required by Symfony 8, possible from Sylius 2.3), use Sylius 2.3.1 or
+later. The Sylius 2.3.0 core migrations only recognise MySQL and skip themselves on MariaDB, so
+`sylius_channel` is never created and the plugin migration cannot add its foreign key. Sylius 2.3.1
+recognises MariaDB again; Sylius 2.1 and 2.2 run on DBAL 3, where the MariaDB platform extends the
+MySQL one.
 
 CI builds the database from the migrations, then:
 

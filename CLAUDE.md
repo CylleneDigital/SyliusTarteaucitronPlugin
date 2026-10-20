@@ -56,9 +56,10 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   suites are not imported (2.1 / 2.2 ship them in YAML).
 - `tests/TestApplication/config/services_test.php` imports Sylius' Behat services as PHP when the
   file exists (2.3+) and as XML otherwise: Symfony 8 cannot load the XML one.
-- **Sylius migrations on MariaDB with DBAL 4** skip themselves (`isMySql()` is false for
-  `MariaDBPlatform`), so `sylius_channel` never exists and the plugin migration fails on its
-  foreign key. DBAL 4 comes with Symfony 8 / Sylius 2.3: the CI MariaDB job stays on Sylius 2.2.
+- **Sylius 2.3.0 on MariaDB with DBAL 4** skips its own migrations (`isMySql()` is false for
+  `MariaDBPlatform`, fixed in 2.3.1 by Sylius#19272), so `sylius_channel` never exists and the
+  plugin migration fails on its foreign key. Sylius 2.1 and 2.2 stay on DBAL 3. The CI MariaDB job
+  resolves 2.3.1 or later, declared as such (`serverVersion=11.4.0-MariaDB`).
 - **Sylius 2.1 / 2.2 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI
   caps the ORM below 3.7 for those lines only, the plugin's own constraint stays open. A local
   `vendor/` resolved before 3.7 does not show it.
