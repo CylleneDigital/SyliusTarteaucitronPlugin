@@ -90,10 +90,11 @@ jobs:
                 if: matrix.sylius != '~2.3.0'
                 run: composer require --dev --no-update --no-interaction "behat/behat:^3.22" "friends-of-behat/mink-extension:^2.7"
 
-            # Sylius 2.1 / 2.2 mappings fail ORM 3.7 validation (ShipmentUnit#shipment vs Shipment#units).
+            # Sylius 2.1 mappings fail ORM 3.7 validation (ShipmentUnit#shipment vs Shipment#units). Sylius
+            # 2.2.11 and 2.3.1 declare a conflict with ORM 3.7 themselves (Sylius#19251).
             -
-                name: Keep Doctrine ORM below 3.7 before Sylius 2.3
-                if: matrix.sylius != '~2.3.0'
+                name: Keep Doctrine ORM below 3.7 on Sylius 2.1
+                if: matrix.sylius == '~2.1.0'
                 run: composer require --no-update --no-interaction "doctrine/orm:^2.14 || >=3.0 <3.7"
 
             -

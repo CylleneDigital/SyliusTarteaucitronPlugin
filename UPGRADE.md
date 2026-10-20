@@ -12,7 +12,9 @@ must therefore be written here before it is released, together with the exact st
 
 ## Library upgrades within 1.x
 
-Run `bin/console assets:install` after `composer update` to publish the new library files.
+Run `bin/console assets:install` after `composer update` to publish the new library files, then
+`bin/console cache:clear`: the library version and the asset fingerprints are computed when the
+container is compiled.
 
 - **tarteaucitron.js 1.36.0**: the library now asks for consent before loading Crisp (`crisp`
   moved to `needConsent: true`). A shop with Crisp enabled no longer shows the chat until the
