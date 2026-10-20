@@ -44,6 +44,8 @@ Unknown / missing locales fall back to `en`. Used to set `tarteaucitronForceLang
 
 ### `tarteaucitron_consent_lifetime_days(): int`
 
+Decision: [0025. Consent lifetime: the CNIL default, capped by the library](../adr/0025-consent-lifetime-cnil-default-library-cap.md).
+
 How long the visitor's choice is kept, in days (back office "Essentials" tab, default 180, at most
 364). Emitted as `tarteaucitronForceExpire` before loading `tarteaucitron.min.js`: without it the
 library keeps the choice one year, and it ignores values of 365 days or more.
@@ -92,6 +94,8 @@ Vendor-injected files are not covered. See
 [Bundle configuration](../integration/configuration.md#script_nonce--script_nonce_provider).
 
 ### `tarteaucitron_json` (filter)
+
+Decision: [0016. Every value written into JavaScript goes through InlineJson](../adr/0016-javascript-values-encoded-by-inline-json.md).
 
 A Twig **filter**, not a function: `value|tarteaucitron_json`. `json_encode` with the `InlineJson`
 flags, the same as tracker snippets: `JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS`

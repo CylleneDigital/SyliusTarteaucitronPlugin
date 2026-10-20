@@ -65,6 +65,8 @@ the channel-wide link or the library text.
 
 ## `TarteaucitronConfigurationDataMapper`
 
+Decision: [0029. The form is generated from the option catalog and mapped by data mappers](../adr/0029-form-generated-from-the-option-catalog.md).
+
 Responsibility: bridge between the form and the entity columns.
 
 ### `mapDataToForms`
@@ -123,6 +125,8 @@ the row is not shown in the back office, and its data is left untouched on save.
 Services are created by the synchronizer, not manually by admin. No add/remove.
 
 ## Validation
+
+Decisions: [0017. Links, icon and texts are validated on write and again on read](../adr/0017-links-icon-texts-validated-on-write-and-read.md), [0009. A service with an empty required parameter is not emitted](../adr/0009-service-with-empty-required-parameter-not-emitted.md).
 
 | Field | Rule |
 |-------|------|

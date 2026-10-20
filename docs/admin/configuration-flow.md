@@ -43,6 +43,8 @@ Request (?channelCode=FASHION_WEB)
 
 ## POST/PUT sequence (save)
 
+Decision: [0015. The last save wins](../adr/0015-last-save-wins.md).
+
 ```
 Form submitted + valid
   → TarteaucitronConfigurationDataMapper writes enabled, consent_lifetime_days,

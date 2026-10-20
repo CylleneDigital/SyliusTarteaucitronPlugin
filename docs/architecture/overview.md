@@ -22,7 +22,7 @@ The plugin integrates [tarteaucitron.js](https://tarteaucitron.io/) into Sylius 
 
 ```
 src/
-├── Consent/                    # Domain (no Sylius dependency, except entity constants)
+├── Consent/                    # Domain (no Sylius dependency; constants of the plugin entity only)
 │   ├── ComplianceCheck.php     # CNIL guidance warnings (back office, never blocking)
 │   ├── ConsentAlert.php        # Google / Bing consent mode vs enabled services
 │   ├── InlineJson.php          # JSON flags for inline shop output

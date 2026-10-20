@@ -28,6 +28,8 @@ Sylius Admin resolves hooks prefixed `cyllene_digital_sylius_tarteaucitron.admin
 
 ## Main form template
 
+Decision: [0028. The back office is organised by intention](../adr/0028-back-office-organised-by-intention.md).
+
 `templates/admin/configuration/update/content/form/sections/general/tarteaucitron.html.twig`
 
 Structure:
@@ -66,6 +68,8 @@ In the Consent Mode card, the badges listing the services related to a mode show
 label (`tarteaucitron_service_admin_meta(type).label`) and its on / off state.
 
 Admin assets: `public/admin/tarteaucitron-admin.css` and `public/admin/tarteaucitron-admin.js` (switch counters, search box, Consent Mode badges).
+
+Decision: [0019. No inline script in the back office](../adr/0019-no-inline-script-in-back-office.md).
 
 ## Auxiliary templates
 
@@ -120,5 +124,7 @@ plugin's own admin template only and are **internal**: they can change in a mino
 See also [Consent mode alerts](../domain/consent-alerts.md).
 
 ## Disabling default Sylius hooks
+
+Decision: [0027. The back office is one page per channel, not a Sylius resource](../adr/0027-back-office-one-page-per-channel.md).
 
 Hookables `default`, `show`, `update`, `cancel`, `breadcrumbs` are disabled to avoid standard Sylius CRUD layout (this page is a singleton per channel, not a classic Sylius resource).

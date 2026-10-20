@@ -17,6 +17,8 @@ The `tarteaucitron` hook on `sylius_shop.base.head` is part of the [public contr
 
 ## Shop template
 
+Decisions: [0005. The shop snippet follows the official install](../adr/0005-shop-snippet-follows-the-official-install.md), [0016. Every value written into JavaScript goes through InlineJson](../adr/0016-javascript-values-encoded-by-inline-json.md).
+
 `templates/shop/tarteaucitron.html.twig`
 
 ```twig
@@ -71,10 +73,13 @@ detection on, the library fails on it and never wires its icon and panel buttons
 an overridden template.
 
 The globals are set **before** the library script, which reads them once at load:
-`tarteaucitronForceLanguage` so tarteaucitron.js does not request a language file from
-`<html lang>` and 404, `tarteaucitronForceExpire` for the consent cookie lifetime, and
-`tarteaucitronCustomText` (only when the admin set texts for the current locale). Do not add `defer` on `tarteaucitron.min.js`:
-the official snippet calls `init()` immediately after. Encode every value with the
+`tarteaucitronForceLanguage` so the banner follows the shop locale (left alone, the library reads
+the first two letters of `<html lang>`, then falls back to the browser language),
+`tarteaucitronForceExpire` for the consent cookie lifetime, and `tarteaucitronCustomText` (only
+when the admin set texts for the current locale). The plugin does not add `defer` on
+`tarteaucitron.min.js`: the official snippet calls `init()` immediately after. A theme that makes no
+inline `tarteaucitron.*` call can defer it in an overridden template
+([Snippet position](../integration/assets.md#snippet-position)). Encode every value with the
 `|tarteaucitron_json` filter, not Twig `json_encode`.
 
 The three `<script>` tags and the two script preloads carry `nonce` when a nonce is configured (per response with

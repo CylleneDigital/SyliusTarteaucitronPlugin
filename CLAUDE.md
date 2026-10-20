@@ -12,13 +12,13 @@ This file only holds what reading the code will not tell you.
 
 The plugin targets Sylius 2.1 to 2.3, Symfony 7.4 and 8 (8 with Sylius 2.3 only), PHP 8.2+. It
 performs the free, self-hosted tarteaucitron.js install: the library is **vendored**, never loaded
-from a CDN.
+from a CDN ([0001](docs/adr/0001-library-vendored-and-self-hosted.md)).
 
 ## Where things live
 
 | Path | Role |
 |---|---|
-| `src/Consent/` | **Domain** - init options catalog, trackers, CNIL checks (`ComplianceCheck`), library limits (`OptionConflicts`), JSON encoding. No Sylius dependency beyond entity constants |
+| `src/Consent/` | **Domain** - init options catalog, trackers, CNIL checks (`ComplianceCheck`), library limits (`OptionConflicts`), JSON encoding. No Sylius dependency, only constants of the plugin's own entity |
 | `src/Consent/Init/` | `InitOptionCatalog` (every back-office `tarteaucitron.init()` option), `IntegrationOptions` (theme-level options, from the `integration:` bundle configuration) |
 | `src/Tracker/` | Built-in services, one class per tarteaucitron job key, picked up by the prototype in `config/services/trackers.php` |
 | `src/Sylius/` | Provider of the consent configuration for the current channel, factory, channel resolution for the back office |
@@ -28,7 +28,7 @@ from a CDN.
 | `config/twig_hooks/` | Shop hook (`sylius_shop.base.head`) and back-office page hooks, globbed by the extension's `prepend()` |
 | `templates/shop/tarteaucitron.html.twig` | The official install snippet: globals, library, `init()`, service jobs |
 | `public/tarteaucitron/` | **Vendored library** - only replaced by `bin/update-tarteaucitron.sh`. `css/sylius-fix.css` is ours |
-| `public/admin/` | Back-office stylesheet and script (no inline JS on the page), versioned with `?v=` |
+| `public/admin/` | Back-office stylesheet and script (no inline JS on the page, [0019](docs/adr/0019-no-inline-script-in-back-office.md)), versioned with `?v=` |
 | `src/Migrations/` | The plugin's single migration, written against the DBAL `Schema` API, registered through `migrations_paths` |
 | `docs/adr/` | One decision record per file, indexed in `docs/adr/README.md` |
 | `tests/Unit/`, `tests/Integration/` | Domain without a kernel / kernel tests: container wiring, shop template rendering, form, controller over HTTP, repository |
@@ -186,4 +186,4 @@ The same facts live in several places; change one, change them all:
 
 Shop-specific consent policies, theme styling and hard-coded third-party scripts stay in the
 project using the plugin. This repository carries the Sylius wiring around the free tarteaucitron.js
-library, nothing else.
+library, nothing else ([0037](docs/adr/0037-scope-limited-to-the-free-library-wiring.md)).
