@@ -11,7 +11,7 @@ For installation and day-to-day usage, see the root [README](../README.md).
 | Shop admin (back office) | [Admin user guide](admin/user-guide.md) |
 | Sylius integrator (shop) | [Bundle configuration](integration/configuration.md) (full integrator reference), [Shop](shop/), [Embeds](shop/embeds.md), [Custom tracker](integration/custom-tracker.md), [Public contract](architecture/public-contract.md) |
 | Ops (deployment) | [Persistence](persistence/), [Assets](integration/assets.md), [UPGRADE](../UPGRADE.md) |
-| Plugin contributor | [Architecture](architecture/), [Domain](domain/), [Adding a tracker](development/adding-a-tracker.md), [Adding an init option](development/adding-an-init-option.md), [Adding a bundle config key](development/adding-a-bundle-config-key.md), [Tests](testing/) |
+| Plugin contributor | [Architecture](architecture/), [Decision records](adr/README.md), [Domain](domain/), [Adding a tracker](development/adding-a-tracker.md), [Adding an init option](development/adding-an-init-option.md), [Adding a bundle config key](development/adding-a-bundle-config-key.md), [Tests](testing/) |
 
 ## Table of contents
 
@@ -20,6 +20,7 @@ For installation and day-to-day usage, see the root [README](../README.md).
 - [Overview](architecture/overview.md) - layers, namespaces, dependencies
 - [Bootstrap & DI](architecture/bootstrap.md) - bundle, Symfony extension, prepend config, service ids
 - [Public contract](architecture/public-contract.md) - stable API (semver major), support policy
+- [Decision records](adr/README.md) - one file per architecture decision: its context, the decision, what follows from it
 
 ### Domain (Consent)
 

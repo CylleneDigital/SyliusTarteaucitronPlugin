@@ -53,6 +53,8 @@ To add an alert for a new option:
 
 ## CNIL guidance warnings (`ComplianceCheck`)
 
+Decision: [0024. Back-office notices guide, never block](../adr/0024-back-office-notices-guide-never-block.md).
+
 Separate from the consent-mode alerts above: `ComplianceCheck::check()` flags settings that depart
 from the CNIL cookie guidance. They are **warnings only** - saving is never blocked, the admin keeps
 the last word.

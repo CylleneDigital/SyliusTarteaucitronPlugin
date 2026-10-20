@@ -5,6 +5,8 @@ Guide for coding agents working on this repository. It complements, without repe
 - [`README.md`](README.md) - what the plugin does, installation, configuration, public contract
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) - bringing up the environment, QA commands, PR conventions
 - [`docs/`](docs/) - technical documentation ([`docs/README.md`](docs/README.md) is the index)
+- [`docs/adr/`](docs/adr/README.md) - decision records: why the plugin is built the way it is. A
+  change that takes or reverses a decision adds a record; an accepted record is never edited
 
 This file only holds what reading the code will not tell you.
 
@@ -28,6 +30,7 @@ from a CDN.
 | `public/tarteaucitron/` | **Vendored library** - only replaced by `bin/update-tarteaucitron.sh`. `css/sylius-fix.css` is ours |
 | `public/admin/` | Back-office stylesheet and script (no inline JS on the page), versioned with `?v=` |
 | `src/Migrations/` | The plugin's single migration, written against the DBAL `Schema` API, registered through `migrations_paths` |
+| `docs/adr/` | One decision record per file, indexed in `docs/adr/README.md` |
 | `tests/Unit/`, `tests/Integration/` | Domain without a kernel / kernel tests: container wiring, shop template rendering, form, controller over HTTP, repository |
 | `features/`, `tests/Behat/` | Behat scenarios, contexts, pages; configuration in `behat.dist.php` |
 | `tests/TestApplication/` | Throwaway Sylius application - test and dev configuration, plus a fixture (`src/Fixture/`) that seeds a tarteaucitron configuration per channel |
@@ -61,8 +64,9 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   plugin migration fails on its foreign key. Sylius 2.1 and 2.2 stay on DBAL 3. The CI MariaDB job
   resolves 2.3.1 or later, declared as such (`serverVersion=11.4.0-MariaDB`).
 - **Sylius 2.1 / 2.2 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI
-  caps the ORM below 3.7 for those lines only, the plugin's own constraint stays open. A local
-  `vendor/` resolved before 3.7 does not show it.
+  caps the ORM below 3.7 for those lines only, the plugin's own constraint stays open
+  ([0036](docs/adr/0036-no-dependency-cap-for-an-upstream-bug.md)). A local `vendor/` resolved
+  before 3.7 does not show it.
 - **`tests/TestApplication/package.json` raises `@symfony/stimulus-bridge` to `^4.0.2`**: the test
   application's `preinstall` merges it into its own `package.json`. The 3.x loader requires
   `webpack/lib/dependencies/LoaderDependency`, gone since webpack 5.112, and the Sylius 2.1 front
@@ -85,7 +89,8 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 - **tarteaucitron.js wires its buttons 500 ms after inserting them**: a Behat click before that is
   lost. With the ad-blocker detection on (`integration.adblocker`, on in the test environment),
   the library builds its panel late; the template creates `tarteaucitron.job` so the library does
-  not crash before wiring anything when no service is enabled. Other library limits:
+  not crash before wiring anything when no service is enabled
+  ([0005](docs/adr/0005-shop-snippet-follows-the-official-install.md)). Other library limits:
   [`docs/domain/init-options.md`](docs/domain/init-options.md#library-limits-tarteaucitronjs-1370).
 - The library only opens the banner when an enabled service needs consent: banner scenarios enable
   `youtube`.
@@ -96,7 +101,8 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 - **The admin route accepts `PUT` on purpose**: once the configuration has an id, Sylius' form
   template posts `_method=PUT`, and the form only submits when the methods match.
 - A service switched on in the back office with a required parameter left empty is **not**
-  emitted on the shop (no job, no category in the panel).
+  emitted on the shop (no job, no category in the panel)
+  ([0009](docs/adr/0009-service-with-empty-required-parameter-not-emitted.md)).
 - The dev fixtures create two channels: Sylius then resolves the channel by host name, so
   `SYLIUS_FIXTURES_HOSTNAME` must match the host the shop is browsed on; `?_channel_code=B2B_WEB`
   switches channel in dev.
@@ -104,11 +110,12 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 - Asset URLs carry a content fingerprint (`?v=`), but the copy in `public/bundles/` only changes
   with `assets:install`. The fingerprints, the library version and its languages are computed when
   the container is compiled (`VendorLibrary`): a `DirectoryResource` recompiles it in debug, a
-  production cache needs `cache:clear` after a library upgrade.
+  production cache needs `cache:clear` after a library upgrade
+  ([0021](docs/adr/0021-library-facts-computed-at-compile-time.md)).
 - **`UniqueTrackerTypePass` sets the tracker registry's arguments** (the service has none in
   `config/services/tracker.php`): a locator of the trackers whose job key is known at compile time,
   plus an iterable for those needing constructor arguments. A tracker added another way than by the
-  tag never reaches the registry.
+  tag never reaches the registry ([0008](docs/adr/0008-one-tracker-per-job-key-duplicates-refused.md)).
 - **The repository's service id is its class name**: DoctrineBundle indexes tagged repositories by
   service id and `EntityManager::getRepository()` asks for the class, so an alias does not do. The
   `cyllene_digital_sylius_tarteaucitron.repository.configuration` id is the alias.
@@ -121,26 +128,33 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 ## Invariants not to break
 
 - **Never patch the vendored library.** Upgrade it with `bin/update-tarteaucitron.sh`;
-  `VendorLibraryParityTest` and `VendorInitOptionsParityTest` then say what the plugin must expose.
+  `VendorLibraryParityTest` and `VendorInitOptionsParityTest` then say what the plugin must expose
+  ([0002](docs/adr/0002-vendored-library-never-patched.md),
+  [0003](docs/adr/0003-every-upstream-option-exposed-or-listed-as-a-gap.md)).
 - **Back office or `integration:`**: an option a shop admin tunes per channel goes in
   `InitOptionCatalog`; an option that depends on the theme, or breaks the banner when wrong, goes
-  in `IntegrationOptions` ([`docs/development/adding-an-init-option.md`](docs/development/adding-an-init-option.md)).
+  in `IntegrationOptions` ([`docs/development/adding-an-init-option.md`](docs/development/adding-an-init-option.md),
+  [0006](docs/adr/0006-channel-options-in-back-office-theme-options-in-configuration.md)).
 - **CNIL warnings never block saving**, and `OptionConflicts` (library limits) stays separate from
-  `ComplianceCheck` (CNIL guidance).
+  `ComplianceCheck` (CNIL guidance) ([0024](docs/adr/0024-back-office-notices-guide-never-block.md)).
 - **Every value written into JavaScript** goes through the `|tarteaucitron_json` filter /
   `InlineJson`, never Twig `json_encode`. `ShopTemplateRenderingTest` renders the real template
-  with hostile values to hold it.
+  with hostile values to hold it ([0016](docs/adr/0016-javascript-values-encoded-by-inline-json.md)).
 - **Choices are stored as strings**, but tarteaucitron.js compares some values strictly:
-  `InitOptionsMapper` turns `'true'` / `'false'` into booleans (`serviceDefaultState`). A new
-  boolean-like choice needs the same, or the library silently ignores it.
+  `InitOptionsMapper::jsChoice()` turns any choice stored as `'true'` / `'false'` into a boolean
+  (`serviceDefaultState`). A new boolean-like choice must use those two strings, or the library
+  silently ignores it ([0013](docs/adr/0013-choices-stored-as-strings.md)).
 - **The form DataMappers are the only source of the fields' data**: the fields added in
-  `PRE_SET_DATA` take no `data` / `mapped` option (`Form::setData()` maps right after that event).
+  `PRE_SET_DATA` take no `data` / `mapped` option (`Form::setData()` maps right after that event)
+  ([0029](docs/adr/0029-form-generated-from-the-option-catalog.md)).
 - **Schema changes ship as a new migration in `src/Migrations/`**, written against the DBAL
   `Schema` API and kept free of drift on MySQL, MariaDB and PostgreSQL (CI runs `down()` / `up()`
-  then the drift check). Never ask the host application to run `doctrine:migrations:diff`.
+  then the drift check). Never ask the host application to run `doctrine:migrations:diff`
+  ([0014](docs/adr/0014-schema-change-is-a-new-migration.md)).
 - Init option keys are stored in the database and the shop Twig functions are public: the public
   contract ([`docs/architecture/public-contract.md`](docs/architecture/public-contract.md)) only
-  breaks in a major version, with an entry in `UPGRADE.md`.
+  breaks in a major version, with an entry in `UPGRADE.md`
+  ([0031](docs/adr/0031-small-public-api-stored-keys-are-the-contract.md)).
 - **No `CHANGELOG.md`**: the GitHub release notes are the changelog, `UPGRADE.md` says what a shop
   has to do.
 - **The Flex recipe is not in this repository** (it lives in `symfony/recipes-contrib`,

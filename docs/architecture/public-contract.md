@@ -5,6 +5,9 @@ changed without a **major** version bump. Everything else is `@internal` and may
 version (see [What is internal](#what-is-internal)). [Support policy](#support-policy) and
 [upgrades](#upgrading) are at the end of the page.
 
+The [decision records](../adr/README.md) explain choices, some of them about internals: a record
+promises nothing, only this page says what is stable.
+
 ## PHP API
 
 | Element | Namespace `CylleneDigital\SyliusTarteaucitronPlugin\…` | Role |

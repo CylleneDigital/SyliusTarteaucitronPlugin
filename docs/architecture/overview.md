@@ -120,6 +120,23 @@ Every value is printed through the `tarteaucitron_json` filter. Details:
 `ConsentConfigurationProviderInterface`, `TrackerRegistry` and the other services are
 internal: decorating or replacing them is not covered by semver.
 
+## Design decisions
+
+The main choices and where they show in the code; every decision, with its reasons, is in the
+[decision records](../adr/README.md).
+
+| Decision | In the code |
+|---|---|
+| [tarteaucitron.js is vendored and self-hosted, never loaded from a CDN](../adr/0001-library-vendored-and-self-hosted.md) | `public/tarteaucitron/`, replaced as a whole by `bin/update-tarteaucitron.sh`; the template links it with `asset()` |
+| [Per-channel options in the back office, theme-level options in configuration](../adr/0006-channel-options-in-back-office-theme-options-in-configuration.md) | `InitOptionCatalog` (back office, `init_options` column) vs `IntegrationOptions` (`integration:` node), merged by `ConsentConfigurationProvider` |
+| [Plugin-owned tables, one configuration per channel](../adr/0010-plugin-owned-tables-one-configuration-per-channel.md) | `TarteaucitronConfiguration` unique on the channel, `TarteaucitronService` unique on (configuration, type); `enabled` defaults to `false` |
+| [Every value written into JavaScript goes through InlineJson](../adr/0016-javascript-values-encoded-by-inline-json.md) | `InlineJson::encode()`, exposed as the `tarteaucitron_json` filter and used by `TrackerScriptRenderer` |
+| [The shop reads the enabled services as arrays, once per request](../adr/0020-shop-reads-enabled-services-as-arrays-per-request.md) | `findShopConsentByChannel()` (arrays, enabled services only), kept per channel by `ConsentConfigurationProvider` (`kernel.reset`) |
+| [Back-office notices guide, never block](../adr/0024-back-office-notices-guide-never-block.md) | `ComplianceCheck` (CNIL), `OptionConflicts` (library limits), `ConsentAlert` (consent modes): rendered by the admin runtime, no validation constraint |
+| [A domain layer without Sylius dependency](../adr/0030-domain-without-sylius-dependency.md) | `src/Consent/` imports nothing from Sylius; `src/Sylius/` resolves channel and locale |
+| [A small public API: stored keys are the contract](../adr/0031-small-public-api-stored-keys-are-the-contract.md) | Listed in [Public contract](public-contract.md); everything else carries `@internal` |
+| [Twig hooks are prepended by the extension](../adr/0035-twig-hooks-prepended-by-the-extension.md) | `CylleneDigitalSyliusTarteaucitronExtension::prepend()`: Doctrine mapping, migrations path, `config/twig_hooks/**/*.yaml` |
+
 ## Entry files
 
 | File | Role |
