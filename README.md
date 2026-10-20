@@ -188,13 +188,16 @@ Upgrade the Composer package, then:
 ```bash
 bin/console assets:install
 bin/console doctrine:migrations:migrate -n
+bin/console cache:clear
 ```
 
 and read [UPGRADE.md](UPGRADE.md).
 
 `assets:install` matters on every upgrade: the vendored library and the plugin stylesheet are served
 from the copy in `public/bundles/`, while their URLs carry a fingerprint of the package files, so
-without it browsers fetch the new URL and get the old file. If your theme overrides
+without it browsers fetch the new URL and get the old file. The library version, its languages and
+those fingerprints are computed when the container is compiled: a production cache keeps the old
+ones until `cache:clear`, as after any code update. If your theme overrides
 `templates/shop/tarteaucitron.html.twig` or an admin template, compare it with the new version.
 
 The vendored tarteaucitron.js is upgraded by the maintainers with each release

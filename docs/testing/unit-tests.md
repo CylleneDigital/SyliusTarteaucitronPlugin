@@ -139,9 +139,10 @@ GitHub workflows:
 - `.github/workflows/build.yaml` - on push to `main`, pull requests, releases and weekly. Matrix:
   Sylius `~2.1.0` / `~2.2.0` / `~2.3.0` × PHP 8.2 to 8.5 × Symfony `^7.4` / `^8.0` on MySQL 8.4, within
   what each line supports (Symfony 8 from Sylius 2.3 and PHP 8.4; Sylius 2.3 from PHP 8.3), plus
-  Sylius `~2.3.0` / PHP 8.4 / Symfony `^8.0` on MariaDB 11.4 and on PostgreSQL 17. Before Sylius 2.3, the job requires Behat 3 first: Sylius 2.1 / 2.2
-  declare their Behat steps in annotations, which Behat 4 no longer reads; it also caps
-  `doctrine/orm` below 3.7 there (their mappings fail its validation). Each job: unit
+  Sylius `~2.3.0` / PHP 8.4 / Symfony `^8.0` on MariaDB 11.4 and on PostgreSQL 17. Before Sylius
+  2.3, the job requires Behat 3 first: Sylius 2.1 / 2.2 declare their Behat steps in annotations,
+  which Behat 4 no longer reads; it also caps `doctrine/orm` below 3.7 there (their mappings fail
+  that version's validation). Each job: unit
   tests, `composer validate --strict`, `lint:container`, `lint:twig templates`,
   `doctrine:schema:validate --skip-sync`, plugin migration reverted (`down()`) and replayed,
   migration / mapping drift check, PHPStan, ECS, integration tests, Behat (all scenarios,
