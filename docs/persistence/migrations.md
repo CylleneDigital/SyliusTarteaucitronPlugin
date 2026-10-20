@@ -34,8 +34,8 @@ vendor/bin/console doctrine:schema:update --dump-sql | grep -i cyllene_tarteauci
 ```
 
 The second command must print nothing: any SQL left for a `cyllene_tarteaucitron_*` table means the
-migration and the mapping have diverged. Every index and foreign key is named in both so that they
-never drift.
+migration and the mapping have diverged. Every index is named in both so that they never drift; the
+foreign keys are named in the migration only, which the schema comparison does not check.
 
 ### `up()`
 
@@ -75,9 +75,11 @@ Via prepend in `CylleneDigitalSyliusTarteaucitronExtension`:
 
 ## Adding a future migration
 
+Decision: [0014. A schema change is a new migration, written against the DBAL Schema API](../adr/0014-schema-change-is-a-new-migration.md).
+
 1. Create a class in `src/Migrations/`
-2. Use the DBAL `Schema` API (not raw SQL) so it stays portable, and name indexes / foreign keys as
-   in the mapping
+2. Use the DBAL `Schema` API (not raw SQL) so it stays portable, name indexes as in the mapping,
+   and give foreign keys an explicit name
 3. Check the drift command above prints nothing on MySQL, MariaDB and PostgreSQL
 4. Document breaking changes in `UPGRADE.md`
 5. If renaming JSON keys → major bump + data migration guide

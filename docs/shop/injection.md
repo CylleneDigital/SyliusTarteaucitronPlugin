@@ -108,6 +108,8 @@ All language files listed in `availableLanguages` inside `tarteaucitron.min.js` 
 
 ## Configuration resolution
 
+Decision: [0020. The shop reads the enabled services as arrays, once per request](../adr/0020-shop-reads-enabled-services-as-arrays-per-request.md).
+
 ```
 ChannelContext (Sylius)
   → ConsentConfigurationProvider::resolve()

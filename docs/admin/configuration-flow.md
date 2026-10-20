@@ -12,6 +12,8 @@
 
 ## Channel resolution
 
+Decision: [0027. The back office is one page per channel, not a Sylius resource](../adr/0027-back-office-one-page-per-channel.md).
+
 The shop channel context (`sylius.context.channel`) reflects the **visitor's** channel, not the one
 the administrator edits. The page resolves it with `AdminChannelResolver` instead, which only the
 back-office controller uses:

@@ -123,6 +123,8 @@ uses `www.googletagmanager.com`.
 
 ## Catalog → entity synchronization
 
+Decision: [0012. Service rows are seeded and never removed](../adr/0012-service-rows-seeded-never-removed.md).
+
 `ServiceCatalogSynchronizer::ensureSeeded()`:
 
 - For each tracker with `isSeededByDefault() === true`
@@ -135,6 +137,8 @@ uses `www.googletagmanager.com`.
 Called on creation (`TarteaucitronConfigurationFactory`) and on every back-office open of an existing config.
 
 ## Registry rules
+
+Decision: [0008. One tracker per job key, duplicates refused](../adr/0008-one-tracker-per-job-key-duplicates-refused.md).
 
 - Duplicate job key → the container build fails (`UniqueTrackerTypePass`, for `trackers:` entries
   and classes constructible without arguments, so every built-in). A duplicate the pass cannot see

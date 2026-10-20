@@ -225,8 +225,12 @@ Sylius plugins, do not add personal rules to it.
   [a bundle config key](docs/development/adding-a-bundle-config-key.md).
 - The codebase is written in **English** (code, comments, commits).
 - Never edit `public/tarteaucitron/` by hand: the vendored library is only replaced by
-  `bin/update-tarteaucitron.sh` ([details](docs/integration/assets.md#upgrading-tarteaucitronjs));
-  `css/sylius-fix.css` is the plugin's own file.
+  `bin/update-tarteaucitron.sh` ([details](docs/integration/assets.md#upgrading-tarteaucitronjs),
+  [why](docs/adr/0002-vendored-library-never-patched.md)); `css/sylius-fix.css` is the plugin's
+  own file.
+- The design choices are explained in the
+  [decision records](docs/adr/README.md): read the one a change touches first. A pull request
+  that takes a new decision, or reverses one, adds a record.
 
 ## What does not belong here
 

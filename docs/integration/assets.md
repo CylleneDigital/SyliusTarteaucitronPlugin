@@ -41,6 +41,8 @@ Used in `templates/shop/tarteaucitron.html.twig` via `asset()`.
 
 ## Asset versioning
 
+Decision: [0022. Asset URLs are fingerprinted, cascaded files are preloaded](../adr/0022-asset-urls-fingerprinted-cascaded-files-preloaded.md).
+
 The plugin template appends a content fingerprint to the two URLs it prints itself:
 
 ```
@@ -79,6 +81,8 @@ while `integration.use_external_css` / `integration.use_external_js` are `false`
 [`use_external_js`](configuration.md#use_external_js-default-false).
 
 ## Upgrading tarteaucitron.js
+
+Decision: [0002. The vendored library is never patched](../adr/0002-vendored-library-never-patched.md).
 
 Never copy files by hand: `bin/update-tarteaucitron.sh` takes the **whole** upstream file set
 (a missing `lang/*.min.js` or `advertising.min.js` 404s and the banner never appears), keeps
@@ -122,6 +126,8 @@ would save one request but needs a `style-src` nonce under a strict Content-Secu
 the plugin only provides for scripts.
 
 ## Snippet position
+
+Decision: [0005. The shop snippet follows the official install](../adr/0005-shop-snippet-follows-the-official-install.md).
 
 The snippet goes in `<head>` (`sylius_shop.base.head`), as the official install does: the globals
 must exist before `tarteaucitron.min.js` (87 KB, 19 KB gzip) runs, and `tarteaucitron` must exist

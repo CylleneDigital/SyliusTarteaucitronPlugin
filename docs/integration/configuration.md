@@ -41,6 +41,8 @@ message - nothing is silently ignored.
 
 ## Back office or configuration?
 
+Decision: [0006. Per-channel options in the back office, theme-level options in configuration](../adr/0006-channel-options-in-back-office-theme-options-in-configuration.md).
+
 | Setting | Where | Why |
 |---|---|---|
 | Enable, privacy / read-more links, consent lifetime | Back office, "Essentials" | Per channel, owned by the shop |
@@ -54,6 +56,8 @@ message - nothing is silently ignored.
 | Vendor services without a PHP class | Configuration, `trackers` | Declared by a developer, then enabled per channel in the back office |
 
 ## `script_nonce` / `script_nonce_provider`
+
+Decision: [0018. The CSP nonce comes from a provider, fixed or per response](../adr/0018-csp-nonce-from-a-provider.md).
 
 CSP nonce added to the `<script>` tags the plugin emits: the three scripts and the two script preloads
 of `templates/shop/tarteaucitron.html.twig`, and the script tag of the back-office page. Default:
@@ -97,6 +101,8 @@ Files tarteaucitron.js injects itself (`lang/`, `tarteaucitron.services.min.js`,
 CSP must allow them (`script-src 'self'` plus each service domain).
 
 ## `locale_aliases`
+
+Decision: [0023. The banner language is forced server-side](../adr/0023-banner-language-forced-server-side.md).
 
 tarteaucitron.js picks its language among `availableLanguages` (see
 `public/tarteaucitron/tarteaucitron.min.js`). The plugin maps the Sylius locale onto that list -
@@ -202,6 +208,8 @@ cyllene_digital_sylius_tarteaucitron:
 It must be a valid HTML id (a letter, then letters, digits, `-`, `_`, `:` or `.`).
 
 ## `trackers`
+
+Decision: [0007. A Sylius-oriented service selection, others added by configuration or by a tagged class](../adr/0007-sylius-oriented-service-selection-others-added-by-the-application.md).
 
 Offers a service of the vendored `tarteaucitron.services.js` in the back office without writing a
 PHP class. It then behaves like a built-in one: on/off switch per channel, parameters, "incomplete"

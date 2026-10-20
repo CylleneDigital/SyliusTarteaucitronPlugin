@@ -84,6 +84,8 @@ Request-scoped cache by channel ID; reset via `ResetInterface` between requests/
 
 ## JSON `init_options`
 
+Decision: [0011. Init options are a JSON map rewritten whole on save](../adr/0011-init-options-json-map-rewritten-whole-on-save.md).
+
 Minimal example after seed:
 
 ```json

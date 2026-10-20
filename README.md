@@ -210,6 +210,7 @@ admin hooks and route, and the database tables only change in a major version. E
 - [Back-office guide](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/admin/user-guide.md) - for shop admins
 - [Bundle configuration](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/integration/configuration.md) - for integrators
 - [Technical documentation](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/README.md) - architecture, rendering, persistence, tests
+- [Decision records](https://github.com/CylleneDigital/SyliusTarteaucitronPlugin/blob/main/docs/adr/README.md) - why the plugin is built the way it is, one decision per file
 
 ## Status
 
