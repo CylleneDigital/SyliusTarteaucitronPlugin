@@ -46,21 +46,26 @@ DATABASE_URL=mysql://root@127.0.0.1:3307/cyllene_digital_sylius_tarteaucitron_pl
 
 ### Docker stack
 
-Ephemeral stack: MySQL + PHP + nginx. `compose.override.yml` is gitignored - copy it from the
-dist file (or let `make docker-up` create it). It has **no Chrome service**.
+Ephemeral stack: MySQL + PHP + nginx + a headless Chrome sharing the PHP container's network.
+`compose.override.yml` is gitignored - copy it from the dist file (or let `make docker-up` create
+it). PHP and the front-end build run as your user (`DOCKER_USER`, set by the Makefile), so `vendor/`
+and `var/` stay yours. nginx serves the test application on <http://localhost:8080/>.
 
 ```bash
-composer install                 # on the host, or: docker compose exec php composer install
 make docker-up                   # copies compose.override.dist.yml if missing, then up -d
                                  # MySQL is published on host port 3307 (3306 is often taken)
+docker compose exec -T php composer install --no-interaction
 make test-app-init               # database + migrations + assets:install (into test-application/public)
 make test-app-frontend           # yarn build in vendor/sylius/test-application (admin @ui)
-docker compose exec -T php vendor/bin/behat --strict --no-interaction -f progress --tags='~@javascript'
+make behat-docker                # every scenario, the @javascript ones included
 make docker-down                 # stop and remove volumes when finished
 ```
 
-`make behat-docker` runs **every** scenario, so its `@javascript` ones fail without a Chrome the PHP
-container can reach; use the command above, or run the `@javascript` scenarios on the host.
+Behat empties the database: load the fixtures again ([Dev shop](#dev-shop)) before browsing the
+shop, in the stack with
+`docker compose exec -T php vendor/bin/console sylius:fixtures:load default -n`. Running
+`docker compose` without `make`, pass your user yourself:
+`DOCKER_USER="$(id -u):$(id -g)" docker compose up -d`.
 
 ### Dev shop
 
@@ -100,7 +105,8 @@ Scenarios without a browser:
 vendor/bin/behat --strict --no-interaction -f progress --tags='~@javascript'
 ```
 
-`@javascript` scenarios need, as configured in `behat.dist.php`:
+The [Docker stack](#docker-stack) brings both of the following. On the host, `@javascript`
+scenarios need, as configured in `behat.dist.php`:
 
 1. Chrome headless with remote debugging on `127.0.0.1:9222`:
 

@@ -3,6 +3,8 @@
 
 DOCKER_PHP = docker compose exec -T php
 
+export DOCKER_USER ?= $(shell id -u):$(shell id -g)
+
 phpunit:
 	vendor/bin/phpunit --colors=always
 
@@ -38,8 +40,8 @@ test-app-init:
 	$(DOCKER_PHP) vendor/bin/console assets:install vendor/sylius/test-application/public
 
 test-app-frontend:
-	docker run --rm -v "$(CURDIR):/app" -w /app/vendor/sylius/test-application node:22-alpine \
-		sh -c "corepack enable && yarn install && yarn build"
+	docker run --rm -u $(DOCKER_USER) -e HOME=/tmp -v "$(CURDIR):/app" -w /app/vendor/sylius/test-application node:22-alpine \
+		sh -c "corepack yarn install && corepack yarn build"
 
 behat-docker:
 	$(DOCKER_PHP) vendor/bin/behat --strict --no-interaction -f progress
