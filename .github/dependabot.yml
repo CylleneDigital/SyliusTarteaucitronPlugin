@@ -11,6 +11,12 @@ updates:
           composer:
               patterns: ["*"]
               update-types: [minor, patch]
+      ignore:
+          # PHPUnit 12 and page-object-extension 0.4 drop PHP 8.2, still supported by the plugin.
+          - dependency-name: phpunit/phpunit
+            versions: [">=12"]
+          - dependency-name: friends-of-behat/page-object-extension
+            versions: [">=0.4"]
     - package-ecosystem: github-actions
       directory: "/"
       schedule:
